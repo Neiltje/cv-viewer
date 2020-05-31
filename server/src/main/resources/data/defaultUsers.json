@@ -1,0 +1,7 @@
+[
+  {
+    "userName": "Neil",
+    "userPassword": "$2a$10$cLIuQEdR/hvtlhTrTJu4ROo1ZOzSDuYArHPhiVwJjuCleGRPaDnzK",
+    "userRoles": "ROLE_USER,ROLE_ADMIN"
+  }
+]
