@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>
+  CV JSON data for {{ cv.name }}
+</h2>
+<mat-dialog-content>
+  <textarea readonly [(ngModel)] = "cvJson"></textarea>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button [cdkCopyToClipboard]="cvJson" class="mat-raised-button">Copy to clipboard</button>
+  <button class="mat-raised-button"(click)="close()">Close</button>
+</mat-dialog-actions>

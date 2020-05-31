@@ -1,0 +1,14 @@
+  <div class="titleImg">
+    <h2> {{ name }} </h2>
+    <img *ngIf="image" src="{{'data:image/jpg;base64,' + image}}" />
+    <p *ngIf="!image">No image provided.</p>
+  </div>
+  <div class="titleText">
+    <h2>{{ title }}</h2>
+    <br/>
+    <mat-form-field *ngIf="dataService.editMode" class="editable">
+      <textarea name="text" matInput [(ngModel)]="text" (keyup)="changeMessage()"></textarea>
+    </mat-form-field>
+    <span *ngIf="!dataService.editMode">{{ text }}</span>
+    <p *ngIf="!dataService.editMode && !text">No details provided.</p>
+  </div>

@@ -1,0 +1,135 @@
+<app-cv-heading
+  [title] = "title"
+  [name] = "name"
+  [text] = "text"
+  [image] = "image"
+  (textNotify) = "updateText($event)">
+</app-cv-heading>
+
+<h2>Skill groups:</h2>
+
+<div *ngIf="skills.skillGroups && skills.skillGroups[0]; else noDetails">
+
+  <div class="mat-accordion-div">
+      
+    <mat-accordion>
+
+      <mat-expansion-panel *ngFor="let skillGroup of skills.skillGroups | orderBy: 'seq'; let i = index">
+      
+        <mat-expansion-panel-header #panelH>
+          <mat-panel-title>
+            {{ skillGroup.heading }}
+          </mat-panel-title>
+          <mat-panel-description (click)="panelH._toggle()">
+            <a (click)="removeSkillGroup(i)">
+              <mat-icon matTooltip="Remove skill group" *ngIf="dataService.editMode">remove</mat-icon>
+            </a>
+            <a (click)="moveSkillGroupUp(i)">
+              <mat-icon matTooltip="Move up" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable': i <= 0 === true}">keyboard_arrow_up</mat-icon>
+            </a>
+            <a (click)="moveSkillGroupDown(i)">
+              <mat-icon matTooltip="Move down" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable':i >= skills.skillGroups.length - 1 === true}">keyboard_arrow_down</mat-icon>
+            </a>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <br>
+
+        <table *ngIf="dataService.editMode">
+          <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 2%;">
+            <col span="1" style="width: 78;">
+          </colgroup>
+          <tr>
+            <td>Skill Group</td>
+            <td>:</td>
+            <td>
+              <input type="text" name="skillGroup" [(ngModel)]="skillGroup.heading" class="editable"/>
+            </td>
+          </tr>
+        </table>
+        
+        <table class="fullWidth">
+          <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 60%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+          </colgroup>
+          <tr>
+            <th>Type</th>
+            <th>Experience (years)</th>
+            <th *ngIf="!dataService.editMode">Ability</th>
+            <th *ngIf="dataService.editMode">Ability (Out of 10)</th>
+            <th>Notes</th>
+            <th *ngIf="dataService.editMode">Remove</th>
+            <th *ngIf="dataService.editMode">Up</th>
+            <th *ngIf="dataService.editMode">Down</th>
+          </tr>
+          <tr *ngFor="let skill of skillGroup.skillSet | orderBy: 'seq'; let j = index">
+            <td *ngIf="!dataService.editMode">{{ skill.type }}</td>
+            <td *ngIf="!dataService.editMode" class="centre">{{ skill.experience }}</td>
+            <td *ngIf="!dataService.editMode" class="tdNoWrap centre">
+              <app-cv-stars
+                [inputLevel] = "skill.ability"
+                [inputMax] = 10>
+              </app-cv-stars>
+            </td>
+            <td *ngIf="!dataService.editMode">{{ skill.notes }}</td>
+            <td *ngIf="dataService.editMode">
+              <input type="text" name="type" [(ngModel)]="skill.type" class="editable"/>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <input type="number"  step="0.5" min="0" name="experience" [(ngModel)]="skill.experience" class="editable"/>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <input type="number"  step="0.5" max="10" min="0" name="ability" [(ngModel)]="skill.ability" class="editable"/>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <mat-form-field class="editable">
+                <textarea name="text" matInput [(ngModel)]="skill.notes"></textarea>
+              </mat-form-field>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="removeSkill(i, j)">
+                <mat-icon matTooltip="Remove skill">remove</mat-icon>
+              </a>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="moveSkillUp(i, j)">
+                <mat-icon matTooltip="Move up" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable': j <= 0 === true}">keyboard_arrow_up</mat-icon>
+              </a>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="moveSkillDown(i, j)">
+                <mat-icon matTooltip="Move down" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable':j >= skillGroup.skillSet.length - 1 === true}">keyboard_arrow_down</mat-icon>
+              </a>
+            </td>
+          </tr>
+        </table>
+                
+        <a *ngIf="dataService.editMode" (click)="addSkill(i)">
+          <mat-icon matTooltip="Add new skill">add</mat-icon>
+        </a>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+  </div>
+
+  <a *ngIf="dataService.editMode" (click)="addSkillGroup()">
+    <mat-icon matTooltip="Add new skill group" *ngIf="dataService.editMode">add</mat-icon>
+  </a>
+
+  <br><br>
+  
+</div>
+
+<ng-template #noDetails>
+  No skill groups provided.
+</ng-template>

@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>
+  Login to the CV Viewer to make changes.
+</h2>
+<mat-dialog-content>
+  <div class="fullWidth">
+    <div class="floatLeft" style = "width: 80%">
+      <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+        <table>
+          <colgroup>
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 2%;">
+            <col span="1" style="width: 68%;">
+          </colgroup>
+          <tr>
+            <td>User name</td>
+            <td>:</td>
+            <td>
+              <input id="userName" type="text" name="userName" formControlName="userName" class="editable">
+            </td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td>:</td>
+            <td>
+              <input id="userPassword" type="password" name="userPassword" formControlName="userPassword" class="editable">
+            </td>
+          </tr>
+        </table>
+        <p [ngClass]="{'errorMessage clearBoth':loginError, 'clearBoth':!loginError }">Enter valid user name and password.</p>
+        <button type="submit" class="mat-raised-button">Login</button>
+        <button type="button" class="mat-raised-button" (click)="close()">Close</button>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<!--<mat-dialog-actions>-->
+<!--  <form (ngSubmit)="login()">-->
+<!--    <button value="login" type="submit" class="mat-raised-button" (click)="login()">Login</button>-->
+<!--    <button value="close" type="button" class="mat-raised-button" (click)="close()">Close</button>-->
+<!--  </form>-->
+<!--</mat-dialog-actions>-->

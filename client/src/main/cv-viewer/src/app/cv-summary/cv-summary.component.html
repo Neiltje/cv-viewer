@@ -1,0 +1,241 @@
+<app-cv-heading
+  [title] = "title"
+  [name] = "name"
+  [text] = "text"
+  [image] = "image"
+  (textNotify) = "updateText($event)">
+</app-cv-heading>
+
+<br>
+
+<div class="fullWidth">
+    
+  <div class="floatLeft" style = "width: 40%">
+    <table>
+      <colgroup>
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 2%;">
+        <col span="1" style="width: 68%;">
+      </colgroup>
+      <tr>
+        <td>Date of Birth</td>
+        <td>:</td>
+        <td>
+          <app-datepicker
+            [date] = "header.dateOfBirth"
+            (dateNotify) = "updateDate($event)">
+          </app-datepicker>
+        </td>
+      </tr>
+      <tr>
+        <td>Current Position</td>
+        <td>:</td>
+        <td>
+          <input *ngIf="dataService.editMode" type="text" name="currentPosition" [(ngModel)]="header.currentPosition" class="editable"/>
+          <span *ngIf="!dataService.editMode">{{header.currentPosition}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Nationality</td>
+        <td>:</td>
+        <td>
+          <input *ngIf="dataService.editMode" type="text" name="nationality" [(ngModel)]="header.nationality" class="editable"/>
+          <span *ngIf="!dataService.editMode">{{header.nationality}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Marital Status</td>
+        <td>:</td>
+        <td>
+          <input *ngIf="dataService.editMode" type="text" name="maritalStatus" [(ngModel)]="header.maritalStatus" class="editable"/>
+          <span *ngIf="!dataService.editMode">{{header.maritalStatus}}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="floatRight" style = "width: 60%">
+    <table class="fullWidth">
+      <colgroup>
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 2%;">
+        <col span="1" style="width: 78%;">
+      </colgroup>
+      <tr>
+        <td>Address</td>
+        <td>:</td>
+        <td>
+          <div *ngFor="let addressLine of header.addressLines; let i = index; trackBy:trackByFn">
+            <input *ngIf="dataService.editMode"
+                  type="text"
+                  name="addressLine"
+                  [(ngModel)]="header.addressLines[i]"
+                  class="editable"
+                  (change)="updateAddressLine(addressLine, i)"
+                  style="width:80%"/>
+            <a (click)="addAddressLine(i)">
+              <mat-icon *ngIf="dataService.editMode">add</mat-icon>
+            </a>
+            <a (click)="removeAddressLine(i)">
+              <mat-icon *ngIf="dataService.editMode">remove</mat-icon>
+            </a>
+            <span *ngIf="!dataService.editMode">{{ addressLine }}</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>E-Mail Address</td>
+        <td>:</td>
+        <td>
+          <input *ngIf="dataService.editMode" type="email" name="emailAddress" [(ngModel)]="header.emailAddress" class="editable"/>
+          <span *ngIf="!dataService.editMode">{{header.emailAddress}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Mobile Phone</td>
+        <td>:</td>
+        <td>
+          <input *ngIf="dataService.editMode" type="tel" name="phoneMobile" [(ngModel)]="header.phoneMobile" class="editable"/>
+          <span *ngIf="!dataService.editMode">{{header.phoneMobile}}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="clearBoth" style="width:90%">
+
+    <h3>Recent Work Experience</h3>
+
+    <div *ngFor="let recentWork of header.recentWorkExperience; let i = index">
+
+      <table *ngIf="dataService.editMode" class="fullWidth">
+        <colgroup>
+          <col span="1" style="width: 20%;">
+          <col span="1" style="width: 2%;">
+          <col span="1" style="width: 78;">
+        </colgroup>
+        <tr>
+          <td>Name</td>
+          <td>:</td>
+          <td>
+            <input type="text" name="name" [(ngModel)]="recentWork.employer" class="editable"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Start Date</td>
+          <td>:</td>
+          <td *ngIf="dataService.editMode">
+            <app-datepicker
+              [date] = "recentWork.startDate"
+              (dateNotify) = "updateStartDate(i, $event)">
+            </app-datepicker>
+          </td>
+        </tr>
+        <tr>
+          <td>End Date</td>
+          <td>:</td>
+          <td *ngIf="dataService.editMode">
+            <app-datepicker
+              [date] = "recentWork.endDate"
+              (dateNotify) = "updateEndDate(i, $event)">
+            </app-datepicker>
+          </td>
+        </tr>
+      </table>
+      
+      <div *ngIf="!dataService.editMode" class="fullWidth">
+        <div>
+          <div class="floatLeft boldText">{{ recentWork.employer }}</div>
+          <div class="dateLight floatLeft">
+            (
+            {{ recentWork.startDate | date:'dd-MM-yyyy' }}
+            -
+            {{ recentWork.endDate | date:'dd-MM-yyyy'}}
+            )
+          </div>
+          <br>
+          <p class="clearBoth">{{ recentWork.notes }}</p>
+        </div>
+      </div>
+
+      <mat-form-field  *ngIf="dataService.editMode" class="editable">
+        <textarea name="text" matInput [(ngModel)]="recentWork.notes"></textarea>
+      </mat-form-field>
+
+      <h4>Roles and Responsibilities:</h4>
+      <div *ngFor="let role of recentWork.roles; let j = index; trackBy:trackByFn">
+        <input *ngIf="dataService.editMode"
+              type="text"
+              name="role"
+              [(ngModel)]="recentWork.roles[j]"
+              class="editable"
+              (change)="updateRole(role, i, j)"
+              style="width:80%"/>
+        <a (click)="addRole(i, j)">
+          <mat-icon *ngIf="dataService.editMode">add</mat-icon>
+        </a>
+        <a (click)="removeRole(i, j)">
+          <mat-icon *ngIf="dataService.editMode">remove</mat-icon>
+        </a>
+        <span *ngIf="!dataService.editMode">* {{ role }};</span>
+      </div>
+
+      <br><br>
+
+    </div>
+        
+    <h3>Key Skills and Competencies</h3>
+
+    <table class="fullWidth alignLeft">
+      <colgroup>
+        <col span="1" style="width: 5%;">
+        <col span="1" style="width: 70%;">
+      </colgroup>
+      <tr>
+        <th *ngIf="!dataService.editMode">Ability</th>
+        <th *ngIf="dataService.editMode">Ability (Out of 10)</th>
+        <th>Skill</th>
+        <th *ngIf="dataService.editMode">Remove</th>
+        <th *ngIf="dataService.editMode">Up</th>
+        <th *ngIf="dataService.editMode">Down</th>
+      </tr>
+      <tr *ngFor="let skill of header.keySkills; let i = index">
+        <td *ngIf="dataService.editMode">
+          <input type="number"  step="0.5" max="10" min="0" name="ability" [(ngModel)]="skill.ability" class="editable"/>
+        </td>
+        <td *ngIf="!dataService.editMode" class="tdNoWrap centre">
+          <app-cv-stars
+            [inputLevel] = "skill.ability"
+            [inputMax] = 10>
+          </app-cv-stars>
+        </td>
+        <td *ngIf="!dataService.editMode">{{ skill.skill }}</td>
+        <td *ngIf="dataService.editMode">
+          <input type="text" name="skill" [(ngModel)]="skill.skill" class="editable"/>
+        </td>
+        <td *ngIf="dataService.editMode" class="centre">
+          <a (click)="removeSkill(i)">
+            <mat-icon matTooltip="Remove skill">remove</mat-icon>
+          </a>
+        </td>
+        <td *ngIf="dataService.editMode" class="centre">
+          <a (click)="moveSkillUp(i)">
+            <mat-icon matTooltip="Move up" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable': i <= 0 === true}">keyboard_arrow_up</mat-icon>
+          </a>
+        </td>
+        <td *ngIf="dataService.editMode" class="centre">
+          <a (click)="moveSkillDown(i)">
+            <mat-icon matTooltip="Move down" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable':i >= header.keySkills.length - 1 === true}">keyboard_arrow_down</mat-icon>
+          </a>
+        </td>
+      </tr>
+    </table>
+            
+    <a *ngIf="dataService.editMode" (click)="addSkill()">
+      <mat-icon matTooltip="Add new skill">add</mat-icon>
+    </a>
+    <br><br>
+
+  </div>
+
+</div>

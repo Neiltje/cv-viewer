@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "cv-viewer",
+      "public": "dist/cv-viewer",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

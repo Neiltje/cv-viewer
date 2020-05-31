@@ -1,0 +1,13 @@
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  height: 3%;
+  width: 95%;
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: rgb(54, 69, 143);
+  background-color: white;
+  color: rgb(54, 69, 143);
+  text-align: right;
+}

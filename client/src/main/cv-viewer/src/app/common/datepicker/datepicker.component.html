@@ -1,0 +1,7 @@
+<mat-form-field *ngIf="dataService.editMode" class="dateFormField">
+  <mat-label>Enter date or use date picker ...</mat-label>
+  <input matInput [matDatepicker]="datePicker" [(ngModel)]="date" (dateChange)="dateChanged($event)">
+  <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+  <mat-datepicker #datePicker (closed)="valueChange()"></mat-datepicker>
+</mat-form-field>
+<span *ngIf="!dataService.editMode">{{ date | date:'dd-MM-yyyy' }}</span>
