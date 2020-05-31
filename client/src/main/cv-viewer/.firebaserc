@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "cv-viewer-app": {
+      "hosting": {
+        "cv-viewer": [
+          "cv-viewer-app"
+        ]
+      }
+    }
+  }
+}

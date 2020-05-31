@@ -1,0 +1,25 @@
+<br><br>
+<p>Please select from the following list of available CVs:</p>
+
+<table>
+    <tr>
+      <th class="nameWidth">Name</th>
+      <th>Summary</th>
+    </tr>
+    <tr>
+      <td>
+        <input (keyup)="onKeyName($event)" placeholder="Filter name ...">
+      </td>
+      <td>
+        <input (keyup)="onKeySummary($event)" placeholder="Filter summary text ...">
+      </td>
+    </tr>
+    <tr *ngFor="let cv of cvList | async | callback: filter:'name':nameFilter | callback: filter:'oneLineSummary':summaryFilter | orderBy: 'name'">
+      <td>
+        <a [title]="cv.name + '\'s CV'" [routerLink]="['/cvs', cv.name]">{{ cv.name }}</a>
+      </td>
+      <td>
+        <a [title]="cv.name + '\'s CV'" [routerLink]="['/cvs', cv.name]">{{ cv.oneLineSummary }}</a>
+      </td>
+    </tr>
+</table>

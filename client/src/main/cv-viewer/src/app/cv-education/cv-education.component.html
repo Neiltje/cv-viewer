@@ -1,0 +1,150 @@
+<app-cv-heading
+  [title]="title"
+  [name]="name"
+  [text]="text"
+  [image]="image"
+  (textNotify) = "updateText($event)">
+</app-cv-heading>
+
+<h2>Institutions:</h2>
+
+<div *ngIf="education.institutions && education.institutions[0]; else noDetails">
+
+  <div class="mat-accordion-div">
+
+    <mat-accordion>
+
+      <mat-expansion-panel *ngFor="let institution of education.institutions | orderByDate: 'startDate'; let i = index">
+
+        <mat-expansion-panel-header #panelH>
+          <mat-panel-title>
+            {{ institution.institution }}
+            <div class="dateLight">
+              (
+              {{ institution.startDate | date:'dd-MM-yyyy' }}
+              -
+              {{ institution.endDate | date:'dd-MM-yyyy'}}
+              )
+            </div>
+          </mat-panel-title>
+          <mat-panel-description (click)="panelH._toggle()">
+            <a (click)="removeInstitution(i)">
+              <mat-icon matTooltip="Remove institution" aria-hidden="false" *ngIf="dataService.editMode">remove</mat-icon>
+            </a>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <br>
+
+        <table *ngIf="dataService.editMode" class="fullWidth">
+          <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 2%;">
+            <col span="1" style="width: 78;">
+          </colgroup>
+          <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td>
+              <input type="text" name="name" [(ngModel)]="institution.institution" class="editable"/>
+            </td>
+          </tr>
+          <tr>
+            <td>Start Date</td>
+            <td>:</td>
+            <td>
+              <app-datepicker
+                [date] = "institution.startDate"
+                (dateNotify) = "updateStartDate(i, $event)">
+              </app-datepicker>
+            </td>
+          </tr>
+          <tr>
+            <td>End Date</td>
+            <td>:</td>
+            <td>
+              <app-datepicker
+                [date] = "institution.endDate"
+                (dateNotify) = "updateEndDate(i, $event)">
+              </app-datepicker>
+            </td>
+          </tr>
+        </table>
+
+        <table class="fullWidth">
+          <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+          </colgroup>
+          <tr>
+            <th>Type</th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Notes</th>
+            <th *ngIf="dataService.editMode">Remove</th>
+            <th *ngIf="dataService.editMode">Up</th>
+            <th *ngIf="dataService.editMode">Down</th>
+          </tr>
+          <tr *ngFor="let qualification of institution.qualifications | orderBy: 'grade'; let j = index">
+            <td  *ngIf="!dataService.editMode">{{ qualification.type }}</td>
+            <td  *ngIf="!dataService.editMode">{{ qualification.subject }}</td>
+            <td  *ngIf="!dataService.editMode">{{ qualification.grade }}</td>
+            <td  *ngIf="!dataService.editMode">{{ qualification.notes }}</td>
+            <td  *ngIf="dataService.editMode" class="skillColumn">
+              <input type="text" name="type" [(ngModel)]="qualification.type" class="editable"/>
+            </td>
+            <td  *ngIf="dataService.editMode" class="skillColumn">
+              <input type="text" name="subject" [(ngModel)]="qualification.subject" class="editable"/>
+            </td>
+            <td  *ngIf="dataService.editMode" class="skillColumn">
+              <input type="text" name="grade" [(ngModel)]="qualification.grade" class="editable"/>
+            </td>
+            <td  *ngIf="dataService.editMode" class="skillColumn">
+              <mat-form-field class="editable">
+                <textarea name="text" matInput [(ngModel)]="qualification.notes"></textarea>
+              </mat-form-field>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="removeQualification(i, j)">
+                <mat-icon matTooltip="Remove qualification">remove</mat-icon>
+              </a>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="moveQualificationUp(i, j)">
+                <mat-icon matTooltip="Move up" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable': j <= 0 === true}">keyboard_arrow_up</mat-icon>
+              </a>
+            </td>
+            <td *ngIf="dataService.editMode">
+              <a (click)="moveQualificationDown(i, j)">
+                <mat-icon matTooltip="Move down" aria-hidden="false" *ngIf="dataService.editMode" [ngClass]="{'disable':j >= institution.qualifications.length - 1 === true}">keyboard_arrow_down</mat-icon>
+              </a>
+            </td>
+          </tr>
+        </table>
+                
+      <a *ngIf="dataService.editMode" (click)="addQualification(i)">
+        <mat-icon matTooltip="Add new qualification">add</mat-icon>
+      </a>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+  </div>
+
+  <a *ngIf="dataService.editMode" (click)="addInstitution()">
+    <mat-icon matTooltip="Add new institution" *ngIf="dataService.editMode">add</mat-icon>
+  </a>
+
+  <br><br>
+  
+</div>
+
+<ng-template #noDetails>
+  No institutions provided.
+</ng-template>

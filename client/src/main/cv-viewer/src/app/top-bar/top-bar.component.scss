@@ -1,0 +1,38 @@
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(122, 138, 221);
+}
+
+.topBar {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  padding-top: 10px;
+  width: 95%;
+  height: 40px;
+  background-color: white;
+  color: rgb(54, 69, 143);
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(54, 69, 143);
+}
+
+.topBarText {
+  font-size: 50%;
+  float: left;
+}
+
+mat-icon {
+  float: right;
+  padding-right: 1%;
+    &:hover {
+    cursor: pointer;
+  }
+}
+
+.loggedOut {
+  color: rgb(150, 158, 240);
+}

@@ -1,0 +1,88 @@
+/* Add application styles & imports to this file! */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+mat-expansion-panel-header {
+  background-color: rgb(239, 240, 247);
+}
+
+mat-expansion-panel-header:hover {
+  background-color: rgb(145, 158, 221) !important;
+  color: white !important;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  background-color: rgb(145, 158, 221) !important;
+  color: white !important;
+}
+
+.mat-expansion-panel-header-title {
+  width: 80%;
+  float: left;
+}
+
+.mat-expansion-panel-header-description {
+  width: 20%;
+  float: right;
+}
+
+.dateLight {
+  padding-left: 10px;
+  color: rgb(192, 176, 176);
+}
+
+.editable {
+  width: 90%;
+  background-color: rgb(241, 245, 222);
+  border-style: ridge;
+  border-color: black;
+  border-width: thin;
+  padding: 2px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.floatRight {
+  float: right;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.clearBoth {
+  clear:both;
+}
+
+.centre {
+  text-align: center;
+}
+
+.disable {
+  color: lightgrey;
+  &:hover{
+    cursor: not-allowed !important;
+    font-weight: normal !important;
+    text-shadow: none !important;
+  }
+  &:active{
+    pointer-events: none;
+  }
+}
+
+button {
+  background-color: rgb(239, 240, 247) !important;
+  &:hover {
+    background-color: rgb(145, 158, 221) !important;
+    color: white;
+  }
+}
+
+.boldText {
+  font-weight: bold;
+}
+
+.alignLeft {
+  text-align: left;
+}

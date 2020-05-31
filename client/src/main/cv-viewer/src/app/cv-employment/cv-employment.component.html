@@ -1,0 +1,176 @@
+<app-cv-heading
+  [title] = "title"
+  [name] = "name"
+  [text] = "text"
+  [image] = "image"
+  (textNotify) = "updateText($event)">
+</app-cv-heading>
+
+<h2>Employers:</h2>
+
+<div *ngIf="employment.institutions && employment.institutions[0]; else noDetails" class="mat-accordion-div">
+
+  <mat-accordion>
+
+    <mat-expansion-panel *ngFor="let institution of employment.institutions | orderByDate: 'startDate'; let i = index">
+    
+      <mat-expansion-panel-header #panelH>
+        <mat-panel-title>
+          {{ institution.employer }}
+          <div class="dateLight">
+            (
+            {{ institution.startDate | date:'dd-MM-yyyy' }}
+            -
+            {{ institution.endDate | date:'dd-MM-yyyy'}}
+            )
+          </div>
+        </mat-panel-title>
+        <mat-panel-description (click)="panelH._toggle()">
+          <a (click)="removeInstitution(i)">
+            <mat-icon matTooltip="Remove institution" aria-hidden="false" *ngIf="dataService.editMode">remove</mat-icon>
+          </a>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div *ngIf="!dataService.editMode">
+        <p>Start Date: {{ institution.startDate | date:'dd-MM-yyyy' }}</p>
+        <p *ngIf="institution.endDate">End Date: {{ institution.endDate | date:'dd-MM-yyyy' }}</p>
+        <div *ngFor="let note of institution.notes">
+          <p>{{ note }}</p>
+        </div>
+      </div>
+
+      <table *ngIf="dataService.editMode" class="fullWidth">
+        <colgroup>
+          <col span="1" style="width: 20%;">
+          <col span="1" style="width: 2%;">
+          <col span="1" style="width: 78;">
+        </colgroup>
+        <tr>
+          <td>Name</td>
+          <td>:</td>
+          <td>
+            <input type="text" name="employer" [(ngModel)]="institution.employer" class="editable"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Start Date</td>
+          <td>:</td>
+          <td>
+            <app-datepicker
+              [date] = "institution.startDate"
+              (dateNotify) = "updateStartDate(i, $event)">
+            </app-datepicker>
+          </td>
+        </tr>
+        <tr>
+          <td>End Date</td>
+          <td>:</td>
+          <td>
+            <app-datepicker
+              [date] = "institution.endDate"
+              (dateNotify) = "updateEndDate(i, $event)">
+            </app-datepicker>
+          </td>
+        </tr>
+        <tr>
+          <td>Notes</td>
+          <td>:</td>
+          <td>
+            <div *ngFor="let note of institution.notes; let j = index; trackBy:trackByFn">
+              <mat-form-field class="editable">
+                <textarea name="text" matInput [(ngModel)]="institution.notes[j]" (change)="updateNote(note, i, j)"></textarea>
+              </mat-form-field>
+              <a (click)="addNote(i, j)">
+                <mat-icon *ngIf="dataService.editMode">add</mat-icon>
+              </a>
+              <a (click)="removeNote(i, j)">
+                <mat-icon *ngIf="dataService.editMode">remove</mat-icon>
+              </a>
+            </div>
+            <br>
+          </td>
+        </tr>
+      </table>
+
+      <table class="fullWidth">
+        <colgroup>
+          <col span="1" style="width: 5%;">
+          <col span="1" style="width: 5%;">
+          <col span="1" style="width: 20%;">
+          <col span="1" style="width: 60%;">
+          <col span="1" style="width: 10%;">
+        </colgroup>
+        <tr>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Title</th>
+          <th>Notes</th>
+          <th *ngIf="dataService.editMode">Remove</th>
+          <th *ngIf="dataService.editMode">Up</th>
+          <th *ngIf="dataService.editMode">Down</th>
+        </tr>
+        <tr *ngFor="let role of institution.roles | orderByDate: 'startDate'; let j = index">
+          <td *ngIf="!dataService.editMode">{{ role.startDate | date:'dd-MM-yyyy' }}</td>
+          <td *ngIf="!dataService.editMode">{{ role.endDate | date:'dd-MM-yyyy' }}</td>
+          <td *ngIf="!dataService.editMode">{{ role.title }}</td>
+          <td *ngIf="!dataService.editMode">
+            <div *ngFor="let note of role.notes">
+              <p>{{ note }}</p>
+            </div>
+          <td *ngIf="dataService.editMode">
+            <app-datepicker
+              [date] = "role.startDate"
+              (dateNotify) = "updateRoleStartDate(i, j, $event)">
+            </app-datepicker>
+          </td>
+          <td *ngIf="dataService.editMode">
+            <app-datepicker
+              [date] = "role.endDate"
+              (dateNotify) = "updateRoleEndDate(i, j, $event)">
+            </app-datepicker>
+          </td>
+          <td  *ngIf="dataService.editMode">
+            <input type="text" name="title" [(ngModel)]="role.title" class="editable"/>
+          </td>
+          <td  *ngIf="dataService.editMode">
+            <div *ngFor="let note of role.notes; let k = index; trackBy:trackByFn">
+              <mat-form-field class="editable">
+                <textarea name="text" matInput [(ngModel)]="role.notes[k]" (change)="updateRoleNote(note, i, j, k)"></textarea>
+              </mat-form-field>
+              <br>
+              <a (click)="addRoleNote(i, j, k)">
+                <mat-icon *ngIf="dataService.editMode">add</mat-icon>
+              </a>
+              <a (click)="removeRoleNote(i, j, k)">
+                <mat-icon *ngIf="dataService.editMode">remove</mat-icon>
+              </a>
+            </div>
+          </td>
+          <td *ngIf="dataService.editMode">
+            <a (click)="removeRole(i, j)">
+              <mat-icon matTooltip="Remove role">remove</mat-icon>
+            </a>
+          </td>
+        </tr>
+      </table>
+              
+      <a *ngIf="dataService.editMode" (click)="addRole(i)">
+        <mat-icon matTooltip="Add new role">add</mat-icon>
+      </a>
+
+    </mat-expansion-panel>
+
+  </mat-accordion>
+  
+  <a *ngIf="dataService.editMode" (click)="addInstitution()">
+    <mat-icon matTooltip="Add new institution" *ngIf="dataService.editMode">add</mat-icon>
+  </a>
+
+  <br><br>
+
+</div>
+
+<ng-template #noDetails>
+  No institutions provided.
+</ng-template>

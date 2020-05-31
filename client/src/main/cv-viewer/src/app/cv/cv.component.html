@@ -1,0 +1,69 @@
+<div id="main-content">
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>Summary</ng-template>
+      <div class="mat-tab-content">
+        <app-cv-summary
+          [name] = "cv.name"
+          [text] = "cv.summary"
+          [image] = "cv.image"
+          [header] = "cv.header"
+          (textNotify) = "updateSummaryText($event)">
+        </app-cv-summary>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Education</ng-template>
+      <div class="mat-tab-content">
+        <app-cv-education
+          [name] = "cv.name"
+          [text] = "cv.education.notes"
+          [image] = "cv.image"
+          [education] = "cv.education"
+          (textNotify) = "updateEducationText($event)">
+        </app-cv-education>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Skills</ng-template>
+      <div class="mat-tab-content">
+        <app-cv-skills
+          [name] = "cv.name"
+          [text] = "cv.skills.notes"
+          [image] = "cv.image"
+          [skills] = "cv.skills"
+          (textNotify) = "updateSkillsText($event)">
+        </app-cv-skills>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Employment</ng-template>
+      <div class="mat-tab-content">
+        <app-cv-employment
+          [name] = "cv.name"
+          [text] = "cv.employment.notes"
+          [image] = "cv.image"
+          [employment] = "cv.employment"
+          (textNotify) = "updateEmploymentText($event)">
+        </app-cv-employment>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Interests</ng-template>
+      <div class="mat-tab-content">
+        <app-cv-interests
+          [name] = "cv.name"
+          [text] = "cv.summary"
+          [image] = "cv.image"
+          [interests] = "cv.interests"
+          (textNotify) = "updateInterestsText($event)">
+        </app-cv-interests>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<app-cv-bottom-bar
+  [footnote] = "cv.footnote"
+  [sourceURL] = "cv.sourceURL">
+</app-cv-bottom-bar>
