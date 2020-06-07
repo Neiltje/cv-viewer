@@ -4,8 +4,8 @@
     "firstName": "Neil",
     "oneLineSummary": "An experienced software engineer and back-end Java developer",
     "summary": "An experienced and skilled developer with proven expertise in using new frameworks, tools and techniques to deliver improvements throughout the development life-cycle. Having extensive experience in the financial services and banking industry along with exceptional analytical and problem-solving skills. Working mainly in development roles, but also capable of operating in a support role when required. Excellent communications skills and able to bridge the gap between business users and technical team members. Looking for a senior development role in a progressive environment where I can continue to develop new skills and gain more knowledge of the latest development tools and techniques.",
-    "footnote": "This website was written entirely by Neil Jary using Angular.",
-    "sourceURL": "https://stackblitz.com/edit/angular-cv-viewer",
+    "footnote": "This website was written entirely by Neil Jary using Spring Boot and Angular.",
+    "sourceURL": "https://github.com/Neiltje/cv-viewer",
     "header": {
       "dateOfBirth": "1963-03-21",
       "currentPosition": "Principal Software Engineer at Landbay",
