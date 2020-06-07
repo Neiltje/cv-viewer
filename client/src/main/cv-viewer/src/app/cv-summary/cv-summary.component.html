@@ -9,7 +9,7 @@
 <br>
 
 <div class="fullWidth">
-    
+
   <div class="floatLeft" style = "width: 40%">
     <table>
       <colgroup>
@@ -106,7 +106,7 @@
 
     <h3>Recent Work Experience</h3>
 
-    <div *ngFor="let recentWork of header.recentWorkExperience; let i = index">
+    <div *ngFor="let recentWork of header.recentWorkExperience | orderByDate: 'startDate'; let i = index">
 
       <table *ngIf="dataService.editMode" class="fullWidth">
         <colgroup>
@@ -142,7 +142,7 @@
           </td>
         </tr>
       </table>
-      
+
       <div *ngIf="!dataService.editMode" class="fullWidth">
         <div>
           <div class="floatLeft boldText">{{ recentWork.employer }}</div>
@@ -183,7 +183,7 @@
       <br><br>
 
     </div>
-        
+
     <h3>Key Skills and Competencies</h3>
 
     <table class="fullWidth alignLeft">
@@ -230,7 +230,7 @@
         </td>
       </tr>
     </table>
-            
+
     <a *ngIf="dataService.editMode" (click)="addSkill()">
       <mat-icon matTooltip="Add new skill">add</mat-icon>
     </a>
