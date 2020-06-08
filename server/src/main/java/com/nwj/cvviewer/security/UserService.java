@@ -1,10 +1,7 @@
 package com.nwj.cvviewer.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nwj.cvviewer.data.entity.CvData;
+import com.nwj.cvviewer.data.loader.DataLoader;
 import com.nwj.cvviewer.data.repository.UserDetailsRepository;
-import com.nwj.cvviewer.service.impl.CvServiceImpl;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.FileInputStream;
-import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class UserService implements UserDetailsService {
@@ -29,7 +25,7 @@ public class UserService implements UserDetailsService {
     private UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private DataLoader dataLoader;
 
     @Value("${load.default.data}")
     private boolean loadDefaultData;
@@ -39,11 +35,11 @@ public class UserService implements UserDetailsService {
         if (userDetailsRepository.count() == 0
             && loadDefaultData) {
             try {
-                FileInputStream fis = new FileInputStream("src/main/resources/data/defaultUsers.json");
-                String userDetailsString = IOUtils.toString(fis, "UTF-8");
-                com.nwj.cvviewer.data.entity.UserDetails[] cvDataArray = objectMapper.readValue(userDetailsString, com.nwj.cvviewer.data.entity.UserDetails[].class);
-                userDetailsRepository.saveAll(Arrays.asList(cvDataArray));
-                LOGGER.info("{} Users loaded from the default file.", cvDataArray.length);
+                List<com.nwj.cvviewer.data.entity.UserDetails> userDetailsList =
+                        dataLoader.loadData("data/defaultUsers.json",
+                                            com.nwj.cvviewer.data.entity.UserDetails.class);
+                userDetailsRepository.saveAll(userDetailsList);
+                LOGGER.info("{} Users loaded from the default file.", userDetailsList.size());
             } catch (Exception ex) {
                 LOGGER.error("Unable to load Users from default file.", ex);
                 throw new RuntimeException("Unable to load Users from default file.", ex);
