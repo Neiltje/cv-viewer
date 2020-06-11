@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -60,13 +61,17 @@ public class CvServiceImpl implements CvService {
     }
 
     @Override
+    @Transactional
     public void putCv(CvData cvData) {
         LOGGER.info("Saving CV with name = \"{}\".", cvData.getName());
         CvData existingCvData = getCvByName(cvData.getName());
         if (existingCvData != null) {
+            LOGGER.info("Deleting existing CV with name = \"{}\" ...", cvData.getName());
             cvRepository.delete(existingCvData);
+            LOGGER.info("Existing CV with name = \"{}\" deleted.", cvData.getName());
         }
         cvRepository.save(cvData);
+        LOGGER.info("CV with name = \"{}\" saved.", cvData.getName());
     }
 
 }

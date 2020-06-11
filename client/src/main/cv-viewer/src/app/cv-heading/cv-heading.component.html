@@ -1,7 +1,16 @@
+
+<div class="outerDiv">
   <div class="titleImg">
     <h2> {{ name }} </h2>
     <img *ngIf="image" src="{{'data:image/jpg;base64,' + image}}" />
     <p *ngIf="!image">No image provided.</p>
+    <div *ngIf="dataService.editMode">
+      <label for="imageInput" class="imageButton">Select</label>
+      <input id="imageInput" #imageInput
+             type="file"
+             accept="image/*"
+             (change)="processFile(imageInput)">
+    </div>
   </div>
   <div class="titleText">
     <h2>{{ title }}</h2>
@@ -12,3 +21,4 @@
     <span *ngIf="!dataService.editMode">{{ text }}</span>
     <p *ngIf="!dataService.editMode && !text">No details provided.</p>
   </div>
+</div>

@@ -47,6 +47,9 @@ export class CvComponent implements OnInit {
         this.dataService.setCv(this.cv);
       });
     });
+    this.dataService.getImageNotify().subscribe(image => {
+      this.cv.image = image;
+    });
   }
 
 }

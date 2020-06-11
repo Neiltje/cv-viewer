@@ -1,4 +1,4 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
+import { Injectable, ViewContainerRef, Output, EventEmitter } from '@angular/core';
 import { Cv } from './api/index';
 import { CvService } from './api/index'
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
@@ -10,6 +10,7 @@ export class DataService {
   public editMode: boolean = false;
   cv: Cv;
 
+  @Output() imageNotify = new EventEmitter<string>();
 
   constructor(
       private cvService: CvService,
@@ -42,8 +43,17 @@ export class DataService {
   }
 
   saveCv() {
-    this.cvService.putCv(this.cv).subscribe(response => {});
+    this.cvService.putCv(this.cv).subscribe(
+      response => {},
+      error => {
+        window.alert("Unable to save CV - see server logs for more details:" + error.error);
+      });
     this.editMode = false;
+  }
+
+  setImage(image: string) {
+    this.cv.image = image;
+    this.imageNotify.emit(image);
   }
 
   openDialog() {
@@ -54,6 +64,10 @@ export class DataService {
     dialogConfig.width = "1000px";
     dialogConfig.data = this.cv;
     this.dialog.open(CvJsonComponent, dialogConfig);
+  }
+
+  getImageNotify() {
+    return this.imageNotify;
   }
 
 }

@@ -95,7 +95,7 @@ export class CvService {
     /**
      * Get CV by name
      * Get a CV defined on the system by name
-     * @param name
+     * @param name 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -142,7 +142,7 @@ export class CvService {
     /**
      * Login to CV Viewer for updates
      * Login
-     * @param name
+     * @param name 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -154,6 +154,7 @@ export class CvService {
         if (name === null || name === undefined) {
             throw new Error('Required parameter name was null or undefined when calling login.');
         }
+
         let headers = this.defaultHeaders;
 
         // authentication (basicAuth) required
@@ -187,7 +188,7 @@ export class CvService {
     /**
      * Update a CV
      * Update a CV
-     * @param cv
+     * @param cv 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
