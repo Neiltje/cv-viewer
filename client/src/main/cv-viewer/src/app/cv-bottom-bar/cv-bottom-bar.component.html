@@ -1,7 +1,14 @@
 <div class="bottomBar">
-  {{ footnote }}
-  <span *ngIf="sourceURL">
-     Source: 
+  <span *ngIf="!dataService.editMode">{{ footnote }}</span>
+  <span *ngIf="dataService.editMode">
+    <input type="text" name="footnote" [(ngModel)]="footnote" (keyup)="changeFootnote()" class="editable inputEditable"/>
+  </span>
+  <span *ngIf="sourceURL && !dataService.editMode">
+     Source:
     <a href="{{ sourceURL }}" target="_blank" rel="noopener">{{ sourceURL }}</a>
+  </span>
+  <span *ngIf="dataService.editMode">
+     Source:
+    <input type="text" name="sourceURL" [(ngModel)]="sourceURL" (keyup)="changeSourceURL()" class="editable inputEditable"/>
   </span>
 </div>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -32,15 +33,13 @@ public class CvServiceImpl implements CvService {
     @Autowired
     private DataLoader dataLoader;
 
-    @Override
-    public List<CvData> getAllCvs() {
-        LOGGER.info("Getting all CVs from repository ...");
-        List<CvData> cvDataList = cvRepository.findAll();
-        if (CollectionUtils.isEmpty(cvDataList)
+    @PostConstruct
+    public void initialise() {
+        if (cvRepository.count() == 0
             && loadDefaultData) {
             LOGGER.info("No CVs loaded from repository. Loading CVs from default file ...");
             try {
-                cvDataList = dataLoader.loadData("data/defaultCvs.json", CvData.class);
+                List<CvData> cvDataList = cvDataList = dataLoader.loadData("data/defaultCvs.json", CvData.class);
                 cvConversionService.updateReferences(cvDataList);
                 cvRepository.saveAll(cvDataList);
                 LOGGER.info("{} CVs loaded from the default file.", cvDataList.size());
@@ -48,9 +47,14 @@ public class CvServiceImpl implements CvService {
                 LOGGER.error("Unable to load CVs from default file.", ex);
                 throw new RuntimeException("Unable to load CVs from default file.", ex);
             }
-        } else {
-            LOGGER.info("{} CVs retrieved from the repository.", cvDataList.size());
         }
+    }
+
+    @Override
+    public List<CvData> getAllCvs() {
+        LOGGER.info("Getting all CVs from repository ...");
+        List<CvData> cvDataList = cvRepository.findAll();
+        LOGGER.info("{} CVs retrieved from the repository.", cvDataList.size());
         return cvDataList;
     }
 

@@ -65,5 +65,7 @@
 
 <app-cv-bottom-bar
   [footnote] = "cv.footnote"
-  [sourceURL] = "cv.sourceURL">
+  [sourceURL] = "cv.sourceURL"
+  (footnoteNotify) = "updateFootnote($event)"
+  (sourceURLNotify) = "updateSourceURL($event)">
 </app-cv-bottom-bar>

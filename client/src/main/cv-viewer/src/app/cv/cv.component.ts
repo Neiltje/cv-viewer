@@ -40,6 +40,14 @@ export class CvComponent implements OnInit {
     this.cv.interests.push(text);
   }
 
+  updateFootnote(footnote: string) {
+    this.cv.footnote = footnote;
+  }
+
+  updateSourceURL(sourceURL: string) {
+    this.cv.sourceURL = sourceURL;
+  }
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.cvService.getCvByName(params.get('cvName')).subscribe((cv) => {
