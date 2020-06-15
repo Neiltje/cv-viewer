@@ -35,7 +35,8 @@ public class CvServiceImpl implements CvService {
 
     @PostConstruct
     public void initialise() {
-        if (cvRepository.count() == 0
+        long cvCount = cvRepository.count();
+        if (cvCount == 0
             && loadDefaultData) {
             LOGGER.info("No CVs loaded from repository. Loading CVs from default file ...");
             try {
@@ -47,6 +48,8 @@ public class CvServiceImpl implements CvService {
                 LOGGER.error("Unable to load CVs from default file.", ex);
                 throw new RuntimeException("Unable to load CVs from default file.", ex);
             }
+        } else {
+            LOGGER.info("Repository contains {} CVs.", cvCount);
         }
     }
 
