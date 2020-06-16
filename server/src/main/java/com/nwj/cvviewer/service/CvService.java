@@ -10,6 +10,6 @@ public interface CvService {
 
     CvData getCvByName(String cvName);
 
-    void putCv(CvData cvData);
+    void postCv(CvData cvData);
 
 }

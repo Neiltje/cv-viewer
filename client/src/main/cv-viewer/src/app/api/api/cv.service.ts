@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { Cv } from '../model/cv';
+import { CvSummary } from '../model/cvSummary';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -27,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class CvService {
 
-    protected basePath = 'https://localhost:9090';
+    protected basePath = 'https://cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -57,15 +58,15 @@ export class CvService {
 
 
     /**
-     * Get all CVs
-     * Get all CVs defined on the system
+     * Get all CV summaries
+     * Get a summary for all CVs defined on the system
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllCVs(observe?: 'body', reportProgress?: boolean): Observable<Array<Cv>>;
-    public getAllCVs(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Cv>>>;
-    public getAllCVs(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Cv>>>;
-    public getAllCVs(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllCVSummaries(observe?: 'body', reportProgress?: boolean): Observable<Array<CvSummary>>;
+    public getAllCVSummaries(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CvSummary>>>;
+    public getAllCVSummaries(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CvSummary>>>;
+    public getAllCVSummaries(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -82,7 +83,7 @@ export class CvService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<Cv>>(`${this.basePath}/cv/getAll`,
+        return this.httpClient.get<Array<CvSummary>>(`${this.basePath}/cv/getAllCVSummaries`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -186,19 +187,19 @@ export class CvService {
     }
 
     /**
-     * Update a CV
-     * Update a CV
+     * Write or update a CV
+     * Write or update a CV
      * @param cv 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public putCv(cv: Cv, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public putCv(cv: Cv, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public putCv(cv: Cv, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public putCv(cv: Cv, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postCv(cv: Cv, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public postCv(cv: Cv, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public postCv(cv: Cv, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public postCv(cv: Cv, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (cv === null || cv === undefined) {
-            throw new Error('Required parameter cv was null or undefined when calling putCv.');
+            throw new Error('Required parameter cv was null or undefined when calling postCv.');
         }
 
         let headers = this.defaultHeaders;
@@ -226,7 +227,7 @@ export class CvService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<any>(`${this.basePath}/cv`,
+        return this.httpClient.post<string>(`${this.basePath}/cv`,
             cv,
             {
                 withCredentials: this.configuration.withCredentials,

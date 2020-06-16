@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nwj.cvviewer.conversion.CvConversionService;
 import com.nwj.cvviewer.data.entity.*;
 import com.nwj.cvviewer.model.Cv;
+import com.nwj.cvviewer.model.CvSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +31,21 @@ public class CvConversionServiceImpl implements CvConversionService {
     }
 
     @Override
-    public List<Cv> convert(List<CvData> cvDataList) {
+    public CvSummary convertSummary(CvData cvData) {
+        try {
+            String cvJson = objectMapper.writeValueAsString(cvData);
+            return objectMapper.readValue(cvJson, CvSummary.class);
+        } catch (JsonProcessingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<CvSummary> convert(List<CvData> cvDataList) {
         return Optional.ofNullable(cvDataList)
                 .stream()
                 .flatMap(Collection::stream)
-                .map(this::convert)
+                .map(this::convertSummary)
                 .collect(Collectors.toList());
     }
 

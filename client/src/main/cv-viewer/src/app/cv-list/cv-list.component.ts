@@ -34,7 +34,7 @@ export class CvListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cvList = this.cvService.getAllCVs();
+    this.cvList = this.cvService.getAllCVSummaries();
     this.route.paramMap.subscribe(params => {
         this.dataService.unsetCv();
     });

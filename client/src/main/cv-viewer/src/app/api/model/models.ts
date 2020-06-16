@@ -1,4 +1,5 @@
 export * from './cv';
+export * from './cvSummary';
 export * from './education';
 export * from './educationInstitution';
 export * from './employment';

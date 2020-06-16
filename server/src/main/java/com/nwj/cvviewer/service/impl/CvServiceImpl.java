@@ -69,7 +69,7 @@ public class CvServiceImpl implements CvService {
 
     @Override
     @Transactional
-    public void putCv(CvData cvData) {
+    public void postCv(CvData cvData) {
         LOGGER.info("Saving CV with name = \"{}\".", cvData.getName());
         CvData existingCvData = getCvByName(cvData.getName());
         if (existingCvData != null) {

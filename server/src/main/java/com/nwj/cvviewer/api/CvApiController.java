@@ -3,6 +3,7 @@ package com.nwj.cvviewer.api;
 import com.nwj.cvviewer.conversion.CvConversionService;
 import com.nwj.cvviewer.data.entity.CvData;
 import com.nwj.cvviewer.model.Cv;
+import com.nwj.cvviewer.model.CvSummary;
 import com.nwj.cvviewer.service.CvService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class CvApiController implements CvApi {
     private CvConversionService cvConversionService;
 
     @Override
-    public ResponseEntity<List<Cv>> getAllCVs() {
+    public ResponseEntity<List<CvSummary>> getAllCVSummaries() {
         List<CvData> cvList = cvService.getAllCvs();
         return ResponseEntity.ok(cvConversionService.convert(cvList));
     }
@@ -37,9 +38,9 @@ public class CvApiController implements CvApi {
     }
 
     @Override
-    public ResponseEntity<String> putCv(Cv cv) {
+    public ResponseEntity<String> postCv(Cv cv) {
         try {
-            cvService.putCv(cvConversionService.convert(cv));
+            cvService.postCv(cvConversionService.convert(cv));
             return ResponseEntity.ok().build();
         } catch (Exception ex) {
             LOGGER.error("Error encountered while saving CV name = \"{}\"", cv.getName(), ex);

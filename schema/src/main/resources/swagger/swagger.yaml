@@ -9,7 +9,9 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost:9090"
+#host: "localhost:9090"
+#host: "cv-viewer.co.uk"
+host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
 tags:
   - name: "cv"
     description: "Everything about CVs"
@@ -40,12 +42,12 @@ paths:
           description: "Invalid status value"
 
   /cv:
-    put:
+    post:
       tags:
         - "cv"
-      summary: "Update a CV"
-      description: "Update a CV"
-      operationId: putCv
+      summary: "Write or update a CV"
+      description: "Write or update a CV"
+      operationId: postCv
       produces:
         - "application/json"
       consumes:
@@ -72,13 +74,13 @@ paths:
           schema:
             type: string
 
-  /cv/getAll:
+  /cv/getAllCVSummaries:
     get:
       tags:
         - "cv"
-      summary: "Get all CVs"
-      description: "Get all CVs defined on the system"
-      operationId: getAllCVs
+      summary: "Get all CV summaries"
+      description: "Get a summary for all CVs defined on the system"
+      operationId: getAllCVSummaries
       produces:
         - "application/json"
       responses:
@@ -87,7 +89,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/cv"
+              $ref: "#/definitions/cvSummary"
         "400":
           description: "Invalid status value"
 
@@ -115,6 +117,14 @@ paths:
 
 
 definitions:
+  cvSummary:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      oneLineSummary:
+        type: "string"
+
   cv:
     type: "object"
     properties:
@@ -136,6 +146,7 @@ definitions:
           type: "string"
       image:
         type: "string"
+        format: binary
       header:
         $ref: "#/definitions/header"
       education:

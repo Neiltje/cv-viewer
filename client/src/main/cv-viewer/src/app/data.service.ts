@@ -43,7 +43,8 @@ export class DataService {
   }
 
   saveCv() {
-    this.cvService.putCv(this.cv).subscribe(
+
+    this.cvService.postCv(this.cv).subscribe(
       response => {},
       error => {
         window.alert("Unable to save CV - see server logs for more details:" + error.error);
