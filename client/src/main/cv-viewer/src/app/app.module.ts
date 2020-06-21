@@ -15,10 +15,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
+import { CvTopBarComponent } from './cv-top-bar/cv-top-bar.component';
 import { CvListComponent } from './cv-list/cv-list.component';
 import { CvComponent } from './cv/cv.component';
 import { CvEducationComponent } from './cv-education/cv-education.component';
@@ -37,8 +40,11 @@ import { DatePickerComponent } from './common/datepicker/datepicker.component';
 import { CvJsonComponent } from './cv-json/cv-json.component'
 
 import { CvService } from './api/index';
+import { UserService } from './api/index';
 import { CvLoginComponent } from './cv-login/cv-login.component';
 import { AuthenticationService } from './authentication.service';
+import { CvUserCreateComponent } from './cv-user-create/cv-user-create.component';
+import { UserDetailsService } from './user-details.service';
 
 
 @NgModule({
@@ -47,7 +53,10 @@ import { AuthenticationService } from './authentication.service';
     BrowserAnimationsModule,
     MatTabsModule,
     MatExpansionModule,
-    MatIconModule,
+    MatButtonModule, 
+    MatIconModule, 
+    MatMenuModule,
+    MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
@@ -63,9 +72,15 @@ import { AuthenticationService } from './authentication.service';
       { path: 'cvs/:cvName', component: CvComponent }
     ])
   ],
+  exports: [
+    MatButtonModule, 
+    MatIconModule, 
+    MatMenuModule,
+    MatToolbarModule,
+  ],
   declarations: [
      AppComponent,
-     TopBarComponent,
+     CvTopBarComponent,
      CvListComponent,
      CvComponent,
      CvEducationComponent,
@@ -81,7 +96,8 @@ import { AuthenticationService } from './authentication.service';
      CvStarsComponent,
      DatePickerComponent,
      CvJsonComponent,
-     CvLoginComponent
+     CvLoginComponent,
+     CvUserCreateComponent
   ],
   bootstrap: [
     AppComponent
@@ -90,11 +106,14 @@ import { AuthenticationService } from './authentication.service';
     { provide: APP_BASE_HREF, useValue : '/' },
     DataService,
     CvService,
-    AuthenticationService
+    UserService,
+    AuthenticationService,
+    UserDetailsService
   ],
   entryComponents: [
     CvJsonComponent,
-    CvLoginComponent
+    CvLoginComponent,
+    CvUserCreateComponent
   ]
 })
 export class AppModule { }

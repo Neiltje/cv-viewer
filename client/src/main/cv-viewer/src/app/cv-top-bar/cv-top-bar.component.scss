@@ -33,6 +33,21 @@ mat-icon {
   }
 }
 
+.dropdown {
+  float: right;
+  padding-right: 1%;
+  width: 300px;
+}
+
+.dropdownIcon {
+  float: none;
+  padding-right: 1%;
+}
+
+::ng-deep.mat-menu-panel {
+  width: 260px !important;
+}
+
 .loggedOut {
   color: rgb(150, 158, 240);
 }

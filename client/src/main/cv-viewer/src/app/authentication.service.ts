@@ -1,5 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { CvService } from './api/index';
+import { UserService } from './api/index';
 import { ApiModule } from './api/index';
 
 @Injectable()
@@ -11,16 +12,19 @@ export class AuthenticationService {
   @Output() authenticatedNotify = new EventEmitter<boolean>();
 
   constructor(
-    private cvService: CvService
+    private cvService: CvService,
+    private userService: UserService
   ) { }
 
   login(userName: string, userPassword: string) {
-    this.cvService.configuration.username = userName;
-    this.cvService.configuration.password = userPassword;
-    this.cvService.login(userName).subscribe(
+    this.userService.configuration.username = userName;
+    this.userService.configuration.password = userPassword;
+    this.userService.login(userName).subscribe(
       (response) => {
         this.authenticated = true;
         this.userName = userName;
+        this.cvService.configuration.username = userName;
+        this.cvService.configuration.password = userPassword;
         this.authenticatedNotify.emit(this.authenticated);
       },
       (error) => {
@@ -35,6 +39,8 @@ export class AuthenticationService {
     this.userName = undefined;
     this.cvService.configuration.username = undefined;
     this.cvService.configuration.password = undefined;
+    this.userService.configuration.username = undefined;
+    this.userService.configuration.password = undefined;
   }
 
   getAuthenticationEventEmitter() {

@@ -4,13 +4,15 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { CvService } from './api/cv.service';
+import { UserService } from './api/user.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    CvService ]
+    CvService,
+    UserService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

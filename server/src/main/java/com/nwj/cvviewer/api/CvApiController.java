@@ -5,6 +5,7 @@ import com.nwj.cvviewer.data.entity.CvData;
 import com.nwj.cvviewer.model.Cv;
 import com.nwj.cvviewer.model.CvSummary;
 import com.nwj.cvviewer.service.CvService;
+import com.nwj.cvviewer.utils.ServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +47,9 @@ public class CvApiController implements CvApi {
             LOGGER.error("Error encountered while saving CV name = \"{}\"", cv.getName(), ex);
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(getUnderlyingCause(ex).getMessage());
+                    .body(ServiceUtils.getUnderlyingCause(ex).getMessage());
         }
     }
 
-    @Override
-    public ResponseEntity<Void> login(String name) {
-        return ResponseEntity.ok().build();
-    }
-
-    private Throwable getUnderlyingCause(Throwable ex) {
-        Throwable cause = ex;
-        if (ex.getCause() != null
-            && ex.getCause() != ex) {
-            ex = getUnderlyingCause(ex.getCause());
-        }
-        return ex;
-    }
 
 }

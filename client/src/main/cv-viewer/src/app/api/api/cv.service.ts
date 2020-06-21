@@ -29,6 +29,7 @@ import { Configuration }                                     from '../configurat
 export class CvService {
 
     protected basePath = 'https://cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com';
+//    protected basePath = 'https://localhost:9090';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -96,7 +97,7 @@ export class CvService {
     /**
      * Get CV by name
      * Get a CV defined on the system by name
-     * @param name 
+     * @param name
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -141,55 +142,9 @@ export class CvService {
     }
 
     /**
-     * Login to CV Viewer for updates
-     * Login
-     * @param name 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public login(name: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public login(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public login(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public login(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling login.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.post<any>(`${this.basePath}/cv/login/${encodeURIComponent(String(name))}`,
-            null,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Write or update a CV
      * Write or update a CV
-     * @param cv 
+     * @param cv
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

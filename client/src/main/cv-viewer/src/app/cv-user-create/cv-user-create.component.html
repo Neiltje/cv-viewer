@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>
+  Create a new CV Viewer user.
+</h2>
+<mat-dialog-content class="fullWidth floatLeft">
+  <form [formGroup]="userForm" (ngSubmit)="createUser(userForm.value)">
+    <table class="fullWidth">
+      <colgroup>
+        <col span="1" style="width: 35%;">
+        <col span="1" style="width: 2%;">
+        <col span="1" style="width: 63%;">
+      </colgroup>
+      <tr>
+        <td>User name</td>
+        <td>:</td>
+        <td>
+          <input id="userName" type="text" name="userName" formControlName="userName" autocomplete="off" class="editable">
+        </td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td>:</td>
+        <td>
+          <input id="userPassword" type="password" name="userPassword" formControlName="userPassword"  autocomplete="off"class="editable">
+        </td>
+      </tr>
+      <tr>
+        <td>Confirm Password</td>
+        <td>:</td>
+        <td>
+          <input id="confirmUserPassword" type="password" name="confirmUserPassword" formControlName="confirmUserPassword" autocomplete="off" class="editable">
+        </td>
+      </tr>
+      <tr>
+        <td class="top">User roles</td>
+        <td class="top">:</td>
+        <td>
+          <div formArrayName="userRoles">
+            <div *ngFor="let userRole of userRoles.controls; let i = index">
+              <select [formControlName]="i" (change)="addUserRole()" class="editable">
+                <option [value]="availableUserRole" *ngFor="let availableUserRole of availableUserRoles">{{ availableUserRole }}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngFor="let error of userErrors" class="errorMessage">
+            {{ error }}
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+      <button type="submit" class="mat-raised-button">Create</button>
+      <button type="button" class="mat-raised-button" (click)="close()">Close</button>
+    </div>
+  </form>
+</mat-dialog-content>

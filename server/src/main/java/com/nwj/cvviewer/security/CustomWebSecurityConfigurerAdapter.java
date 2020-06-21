@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,7 +21,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     private CvBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private UserService userService;
+    private UserDetailsService userService;
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
@@ -34,9 +35,13 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/cv/getAll", "/cv/findByName/").permitAll()
+            .antMatchers(HttpMethod.GET, "/cv/getAllCVSummaries", "/cv/findByName/").permitAll()
             .antMatchers(HttpMethod.POST, "/cv").authenticated()
-            .antMatchers(HttpMethod.POST, "/cv/login/*").authenticated()
+            .antMatchers(HttpMethod.POST, "/user/login/*").authenticated()
+            .antMatchers(HttpMethod.POST, "/user").authenticated()
+            .antMatchers(HttpMethod.POST, "/user/roles").authenticated()
+            .antMatchers(HttpMethod.POST, "/user/password").authenticated()
+            .antMatchers(HttpMethod.DELETE, "/user/*").authenticated()
             .antMatchers( "/cvs/*").permitAll()
             .antMatchers("/**").anonymous()
             .anyRequest().authenticated()

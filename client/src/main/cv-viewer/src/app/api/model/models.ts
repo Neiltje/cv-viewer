@@ -12,3 +12,6 @@ export * from './recentWorkExperienceItem';
 export * from './skill';
 export * from './skillGroup';
 export * from './skills';
+export * from './user';
+export * from './userPassword';
+export * from './userRoles';

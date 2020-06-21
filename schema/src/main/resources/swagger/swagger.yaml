@@ -13,6 +13,8 @@ info:
 #host: "cv-viewer.co.uk"
 host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
 tags:
+  - name: "user"
+    description: "Everything about users"
   - name: "cv"
     description: "Everything about CVs"
 schemes:
@@ -21,10 +23,121 @@ securityDefinitions:
   basicAuth:
     type: basic
 paths:
-  /cv/login/{name}:
+  /user:
     post:
       tags:
-        - "cv"
+        - "user"
+      summary: "Create a new user"
+      description: "User create"
+      operationId: createUser
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "user"
+          required: true
+          schema:
+            $ref: "#/definitions/user"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+
+  /user/roles:
+    post:
+      tags:
+        - "user"
+      summary: "Update roles for a user"
+      description: "User roles"
+      operationId: updateUserRoles
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "user"
+          required: true
+          schema:
+            $ref: "#/definitions/userRoles"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+
+  /user/password:
+    post:
+      tags:
+        - "user"
+      summary: "Update password for a user"
+      description: "User password"
+      operationId: updateUserPassword
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "user"
+          required: true
+          schema:
+            $ref: "#/definitions/userPassword"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+
+  /user/{userName}:
+    delete:
+      tags:
+        - "user"
+      summary: "Delete user"
+      description: "User delete"
+      operationId: deleteUser
+      security:
+        - basicAuth: []
+      parameters:
+        - in: "path"
+          name: "userName"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+
+  /user/login/{name}:
+    post:
+      tags:
+        - "user"
       summary: "Login to CV Viewer for updates"
       description: "Login"
       operationId: login
@@ -117,6 +230,37 @@ paths:
 
 
 definitions:
+
+  user:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      userPassword:
+        type: "string"
+      userRoles:
+        type: "array"
+        items:
+          type: "string"
+
+  userRoles:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      userRoles:
+        type: "array"
+        items:
+          type: "string"
+
+  userPassword:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      userPassword:
+        type: "string"
+
   cvSummary:
     type: "object"
     properties:

@@ -22,4 +22,29 @@
   <a *ngIf="dataService.editMode && authenticationService.authenticated" (click)="copyCv()">
     <mat-icon matTooltip="Copy CV JSON" aria-hidden="false">content_copy</mat-icon>
   </a>
+  <span *ngIf="authenticationService.authenticated" class="dropdown">
+    <div mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()">
+      <mat-icon>settings</mat-icon>
+    </div>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <span (mouseleave)="menuTrigger.closeMenu()">
+        <button mat-menu-item (click)="createUser()">
+          <mat-icon class="dropdownIcon">person_outline</mat-icon>
+          <span>Create New User</span>
+        </button>
+        <button mat-menu-item (click)="changePassword()">
+          <mat-icon class="dropdownIcon">person_outline</mat-icon>
+          <span>Change password</span>
+        </button>
+        <button mat-menu-item (click)="changeRoles()">
+          <mat-icon class="dropdownIcon">person_outline</mat-icon>
+          <span>Change roles</span>
+        </button>
+        <button mat-menu-item (click)="deleteUser()">
+          <mat-icon class="dropdownIcon">person</mat-icon>
+          <span>Delete user</span>
+        </button>
+      </span>
+    </mat-menu>
+  </span>
 </div>
