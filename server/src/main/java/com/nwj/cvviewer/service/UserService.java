@@ -2,7 +2,15 @@ package com.nwj.cvviewer.service;
 
 import com.nwj.cvviewer.data.entity.UserDetails;
 
+import java.util.List;
+
 public interface UserService {
+
+    List<String> login(String userName);
+
+    List<String> getUserRoles(String userName);
+
+    List<String> getAllUserNames();
 
     void createUser(UserDetails userDetails);
 

@@ -9,9 +9,9 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-#host: "localhost:9090"
+host: "localhost:9090"
 #host: "cv-viewer.co.uk"
-host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
+#host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
 tags:
   - name: "user"
     description: "Everything about users"
@@ -22,6 +22,7 @@ schemes:
 securityDefinitions:
   basicAuth:
     type: basic
+
 paths:
   /user:
     post:
@@ -47,6 +48,29 @@ paths:
           description: "successful operation"
           schema:
             type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+
+  /user/getAllUserNames:
+    get:
+      tags:
+        - "user"
+      summary: "Get all users"
+      description: "User get"
+      operationId: getAllUserNames
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
         "400":
           description: "Invalid status value"
           schema:
@@ -134,7 +158,31 @@ paths:
           schema:
             type: string
 
-  /user/login/{name}:
+  /user/getUserRoles:
+    get:
+      tags:
+        - "user"
+      summary: "Get the roles for a user"
+      description: "Get user roles"
+      operationId: getUserRoles
+      security:
+        - basicAuth: []
+      parameters:
+        - in: "query"
+          name: "userName"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation returns roles"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+        "400":
+          description: "Invalid status value"
+
+  /user/login/{userName}:
     post:
       tags:
         - "user"
@@ -145,12 +193,16 @@ paths:
         - basicAuth: []
       parameters:
         - in: "path"
-          name: "name"
+          name: "userName"
           required: true
           type: string
       responses:
         "200":
-          description: "successful operation"
+          description: "successful operation returns roles"
+          schema:
+            type: "array"
+            items:
+              type: "string"
         "400":
           description: "Invalid status value"
 

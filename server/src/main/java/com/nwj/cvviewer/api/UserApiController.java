@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class UserApiController implements UserApi {
 
@@ -22,8 +24,18 @@ public class UserApiController implements UserApi {
     private UserService userService;
 
     @Override
-    public ResponseEntity<Void> login(String name) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<String>> login(String userName) {
+        return ResponseEntity.ok(userService.login(userName));
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getUserRoles(String userName) {
+        return ResponseEntity.ok(userService.getUserRoles(userName));
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getAllUserNames() {
+        return ResponseEntity.ok(userService.getAllUserNames());
     }
 
     @Override

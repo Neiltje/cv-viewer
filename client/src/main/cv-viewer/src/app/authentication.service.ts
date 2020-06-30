@@ -8,6 +8,7 @@ export class AuthenticationService {
 
   authenticated = false;
   userName = undefined;
+  userRoles: string[];
 
   @Output() authenticatedNotify = new EventEmitter<boolean>();
 
@@ -23,6 +24,7 @@ export class AuthenticationService {
       (response) => {
         this.authenticated = true;
         this.userName = userName;
+        this.userRoles = response;
         this.cvService.configuration.username = userName;
         this.cvService.configuration.password = userPassword;
         this.authenticatedNotify.emit(this.authenticated);
@@ -30,8 +32,13 @@ export class AuthenticationService {
       (error) => {
         this.authenticated = false;
         this.userName = undefined;
+        this.userRoles = undefined;
         this.authenticatedNotify.emit(this.authenticated);
       });
+  }
+
+  isAdmin() {
+    return this.userRoles.indexOf("ROLE_ADMIN") > -1;
   }
 
   logout() {

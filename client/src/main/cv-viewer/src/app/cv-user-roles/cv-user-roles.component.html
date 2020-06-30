@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>
-  Create a new CV Viewer user.
+  Change CV Viewer user roles.
 </h2>
 <mat-dialog-content class="fullWidth floatLeft">
-  <form [formGroup]="userForm" (ngSubmit)="createUser(userForm.value)">
+  <form [formGroup]="userForm" (ngSubmit)="updateUserRoles(userForm.value)">
     <table class="fullWidth">
       <colgroup>
         <col span="1" style="width: 35%;">
@@ -13,21 +13,10 @@
         <td>User name</td>
         <td>:</td>
         <td>
-          <input id="userName" type="text" name="userName" formControlName="userName" autocomplete="off" class="editable">
-        </td>
-      </tr>
-      <tr>
-        <td>Password</td>
-        <td>:</td>
-        <td>
-          <input id="userPassword" type="password" name="userPassword" formControlName="userPassword"  autocomplete="off"class="editable">
-        </td>
-      </tr>
-      <tr>
-        <td>Confirm Password</td>
-        <td>:</td>
-        <td>
-          <input id="confirmUserPassword" type="password" name="confirmUserPassword" formControlName="confirmUserPassword" autocomplete="off" class="editable">
+          <span *ngIf="!authenticationService.isAdmin()">{{ authenticationService.userName }}</span>
+          <select *ngIf="authenticationService.isAdmin()" formControlName="userName" (change)="setUserName($event)" class="editable">
+            <option *ngFor="let availableUserName of availableUserNames">{{ availableUserName }}</option>
+          </select>
         </td>
       </tr>
       <tr>
@@ -46,7 +35,7 @@
     </table>
     <br>
     <div>
-      <button type="submit" class="mat-raised-button">Create</button>
+      <button type="submit" class="mat-raised-button">Update</button>
       <button type="button" class="mat-raised-button" (click)="close()">Close</button>
     </div>
     <br>

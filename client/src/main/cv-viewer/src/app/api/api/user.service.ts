@@ -157,19 +157,65 @@ export class UserService {
     }
 
     /**
-     * Login to CV Viewer for updates
-     * Login
-     * @param name
+     * Get all users
+     * User get
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public login(name: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public login(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public login(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public login(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllUserNames(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getAllUserNames(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getAllUserNames(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getAllUserNames(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling login.');
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<string>>(`${this.basePath}/user/getAllUserNames`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the roles for a user
+     * Get user roles
+     * @param userName
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getUserRoles(userName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getUserRoles(userName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getUserRoles(userName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public getUserRoles(userName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userName === null || userName === undefined) {
+            throw new Error('Required parameter userName was null or undefined when calling getUserRoles.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (userName !== undefined && userName !== null) {
+            queryParameters = queryParameters.set('userName', <any>userName);
         }
 
         let headers = this.defaultHeaders;
@@ -191,7 +237,53 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.post<any>(`${this.basePath}/user/login/${encodeURIComponent(String(name))}`,
+        return this.httpClient.get<Array<string>>(`${this.basePath}/user/getUserRoles`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Login to CV Viewer for updates
+     * Login
+     * @param userName
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public login(userName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public login(userName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public login(userName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public login(userName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userName === null || userName === undefined) {
+            throw new Error('Required parameter userName was null or undefined when calling login.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.post<Array<string>>(`${this.basePath}/user/login/${encodeURIComponent(String(userName))}`,
             null,
             {
                 withCredentials: this.configuration.withCredentials,

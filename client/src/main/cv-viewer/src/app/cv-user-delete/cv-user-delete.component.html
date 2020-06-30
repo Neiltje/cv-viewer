@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>
+  Delete CV Viewer user.
+</h2>
+<mat-dialog-content class="fullWidth floatLeft">
+  <form [formGroup]="userForm" (ngSubmit)="deleteUser(userForm.value)">
+    <table class="fullWidth">
+      <colgroup>
+        <col span="1" style="width: 35%;">
+        <col span="1" style="width: 2%;">
+        <col span="1" style="width: 63%;">
+      </colgroup>
+      <tr>
+        <td>User name</td>
+        <td>:</td>
+        <td>
+          <span *ngIf="!authenticationService.isAdmin()">{{ authenticationService.userName }}</span>
+          <select *ngIf="authenticationService.isAdmin()" formControlName="userName" (change)="setUserName($event)" class="editable">
+            <option *ngFor="let availableUserName of availableUserNames">{{ availableUserName }}</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <div>
+      <button type="submit" class="mat-raised-button">Delete</button>
+      <button type="button" class="mat-raised-button" (click)="close()">Close</button>
+    </div>
+    <br>
+    <div *ngFor="let error of userErrors" class="errorMessage">
+      {{ error }}
+    </div>
+  </form>
+</mat-dialog-content>

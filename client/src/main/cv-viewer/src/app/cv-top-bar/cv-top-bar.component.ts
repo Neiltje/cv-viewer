@@ -4,6 +4,9 @@ import { DataService } from '../data.service'
 import { AuthenticationService } from '../authentication.service'
 import { CvLoginComponent } from '../cv-login/cv-login.component';
 import { CvUserCreateComponent } from '../cv-user-create/cv-user-create.component';
+import { CvUserPasswordComponent } from '../cv-user-password/cv-user-password.component';
+import { CvUserRolesComponent } from '../cv-user-roles/cv-user-roles.component';
+import { CvUserDeleteComponent } from '../cv-user-delete/cv-user-delete.component';
 
 @Component({
   selector: 'cv-top-bar',
@@ -31,34 +34,6 @@ export class CvTopBarComponent implements OnInit {
   }
 
   login() {
-    this.openLoginDialog();
-  }
-
-  createUser() {
-    this.openCreateUserDialog();
-  }
-
-  changePassword() {
-    window.alert("Change password function not implemented yet");
-  }
-
-  changeRoles() {
-    window.alert("Change roles function not implemented yet");
-  }
-
-  deleteUser() {
-    window.alert("Delete user function not implemented yet");
-  }
-
-  logout() {
-    this.authenticationService.logout();
-    this.dataService.setEditOff();
-  }
-
-  ngOnInit() {
-  }
-
-  openLoginDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -67,13 +42,48 @@ export class CvTopBarComponent implements OnInit {
     this.dialog.open(CvLoginComponent, dialogConfig);
   }
 
-  openCreateUserDialog() {
+  createUser() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.height = "320px";
     dialogConfig.width = "450px";
     this.dialog.open(CvUserCreateComponent, dialogConfig);
+  }
+
+  changePassword() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = "260px";
+    dialogConfig.width = "450px";
+    this.dialog.open(CvUserPasswordComponent, dialogConfig);
+  }
+
+  changeRoles() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = "280px";
+    dialogConfig.width = "450px";
+    this.dialog.open(CvUserRolesComponent, dialogConfig);
+  }
+
+  deleteUser() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = "180px";
+    dialogConfig.width = "450px";
+    this.dialog.open(CvUserDeleteComponent, dialogConfig);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.dataService.setEditOff();
+  }
+
+  ngOnInit() {
   }
 
 }

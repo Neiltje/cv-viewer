@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -68,6 +69,48 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 userDetails.getUserPassword(),
                 AuthorityUtils.createAuthorityList(userRoles)
         );
+    }
+
+    @Override
+    public List<String> login(String userName) {
+        UserDetails existingUserDetails = userDetailsRepository.findByUserName(userName);
+        if (existingUserDetails == null) {
+            throw new RuntimeException("User \"" + userName + "\" does not exist.");
+        } else {
+            LOGGER.info("User with name = \"{}\" logged in.", userName);
+            String userRoles = existingUserDetails.getUserRoles();
+            if (userRoles != null) {
+                return List.of(userRoles.split(","));
+            } else {
+                return List.of();
+            }
+        }
+    }
+
+    @Override
+    public List<String> getUserRoles(String userName) {
+        UserDetails existingUserDetails = userDetailsRepository.findByUserName(userName);
+        if (existingUserDetails == null) {
+            throw new RuntimeException("User \"" + userName + "\" does not exist.");
+        } else {
+            String userRoles = existingUserDetails.getUserRoles();
+            List<String> userRoleList;
+            if (userRoles != null) {
+                userRoleList = List.of(userRoles.split(","));
+            } else {
+                userRoleList = List.of();
+            }
+            LOGGER.info("User with name = \"{}\" has roles {}.", userName, userRoleList);
+            return userRoleList;
+        }
+    }
+
+    @Override
+    public List<String> getAllUserNames() {
+        LOGGER.info("Getting all user names.");
+        return userDetailsRepository.findAll().stream()
+                .map(UserDetails::getUserName)
+                .collect(Collectors.toList());
     }
 
     @Override

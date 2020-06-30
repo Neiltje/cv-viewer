@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
-import { UserService } from './api/index';
-import { User } from './api/index';
+import { UserService, User, UserPassword, UserRoles } from './api/index';
 
 @Injectable()
 export class UserDetailsService {
@@ -13,10 +12,9 @@ export class UserDetailsService {
     private userService: UserService
   ) { }
 
-
   hasUserRole(formGroup: FormGroup) {
-    if (formGroup != undefined && this.userRoles != undefined) {
-      for (var i = 0; i < this.userRoles.length; i++) {
+    if (formGroup != undefined && this.userRoles(formGroup) != undefined) {
+      for (var i = 0; i < this.userRoles(formGroup).length; i++) {
         if (this.userRoles(formGroup).at(i).value != '') return true;
       }
     }
@@ -58,6 +56,19 @@ export class UserDetailsService {
   }
 
   public userNameValidator() : ValidatorFn{
+       return (group: FormGroup): ValidationErrors => {
+          const userNameControl = group.controls['userName'];
+          const currentUser = this.authenticationService.userName;
+          if (userNameControl.value == '') {
+            userNameControl.setErrors({'error': 'User cannot be blank'});
+          } else {
+            userNameControl.setErrors(null);
+          }
+          return;
+    };
+  }
+
+  public userNameCreateValidator() : ValidatorFn{
        return (group: FormGroup): ValidationErrors => {
           const userNameControl = group.controls['userName'];
           const currentUser = this.authenticationService.userName;
@@ -123,8 +134,51 @@ export class UserDetailsService {
       (response) => {
       },
       (error) => {
-        window.alert("Unable to save User - see server logs for more details:" + error.error);
+        window.alert("Unable to save User - see server logs for more details: " + error.error);
       });
+  }
+
+  updateUserPassword(userName: string, userPassword: string) {
+    var userPasswordObj: UserPassword = {
+      userName: userName,
+      userPassword: userPassword
+    };
+    this.userService.updateUserPassword(userPasswordObj).subscribe(
+      (response) => {
+      },
+      (error) => {
+        window.alert("Unable to update User password - see server logs for more details: " + error.error);
+      });
+  }
+
+  updateUserRoles(userName: string, userRoles: string[]) {
+    var userRolesObj: UserRoles = {
+      userName: userName,
+      userRoles: userRoles
+    };
+    this.userService.updateUserRoles(userRolesObj).subscribe(
+      (response) => {
+      },
+      (error) => {
+        window.alert("Unable to update User roles - see server logs for more details: " + error.error);
+      });
+  }
+
+  deleteUser(userName: string) {
+    this.userService.deleteUser(userName).subscribe(
+      (response) => {
+      },
+      (error) => {
+        window.alert("Unable to delete User - see server logs for more details: " + error.error);
+      });
+  }
+
+  getAllUserNames() {
+    return this.userService.getAllUserNames();
+  }
+
+  getUserRoles(userName: string) {
+    return this.userService.getUserRoles(userName);
   }
 
 }

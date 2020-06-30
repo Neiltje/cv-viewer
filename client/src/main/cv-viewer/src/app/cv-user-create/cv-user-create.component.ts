@@ -30,7 +30,7 @@ export class CvUserCreateComponent implements OnInit {
       ])
     },
     { validator: Validators.compose([
-        userDetailsService.userNameValidator(),
+        userDetailsService.userNameCreateValidator(),
         userDetailsService.userPasswordValidator(),
         userDetailsService.userConfirmPasswordValidator(),
         userDetailsService.userRolesValidator()

@@ -45,6 +45,9 @@ import { CvLoginComponent } from './cv-login/cv-login.component';
 import { AuthenticationService } from './authentication.service';
 import { CvUserCreateComponent } from './cv-user-create/cv-user-create.component';
 import { UserDetailsService } from './user-details.service';
+import { CvUserPasswordComponent } from './cv-user-password/cv-user-password.component';
+import { CvUserRolesComponent } from './cv-user-roles/cv-user-roles.component';
+import { CvUserDeleteComponent } from './cv-user-delete/cv-user-delete.component';
 
 
 @NgModule({
@@ -97,7 +100,10 @@ import { UserDetailsService } from './user-details.service';
      DatePickerComponent,
      CvJsonComponent,
      CvLoginComponent,
-     CvUserCreateComponent
+     CvUserCreateComponent,
+     CvUserPasswordComponent,
+     CvUserRolesComponent,
+     CvUserDeleteComponent
   ],
   bootstrap: [
     AppComponent
@@ -113,7 +119,10 @@ import { UserDetailsService } from './user-details.service';
   entryComponents: [
     CvJsonComponent,
     CvLoginComponent,
-    CvUserCreateComponent
+    CvUserCreateComponent,
+    CvUserPasswordComponent,
+    CvUserRolesComponent,
+    CvUserDeleteComponent
   ]
 })
 export class AppModule { }
