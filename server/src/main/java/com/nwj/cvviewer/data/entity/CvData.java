@@ -1,5 +1,6 @@
 package com.nwj.cvviewer.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,6 +25,7 @@ public class CvData extends CvBaseItem {
 	private CvSkills skills;
 	private CvEmployment employment;
 	private List<String> interests;
+	private CvPermissions permissions;
 
 	/**
 	 * @return the name
@@ -190,6 +192,16 @@ public class CvData extends CvBaseItem {
 	 */
 	public void setInterests(List<String> anInterests) {
 		interests = anInterests;
+	}
+
+	@OneToOne(mappedBy="cvData", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	public CvPermissions getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(CvPermissions permissions) {
+		this.permissions = permissions;
 	}
 
 }

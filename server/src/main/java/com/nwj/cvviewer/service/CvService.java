@@ -1,6 +1,7 @@
 package com.nwj.cvviewer.service;
 
 import com.nwj.cvviewer.data.entity.CvData;
+import com.nwj.cvviewer.data.entity.CvPermissions;
 
 import java.util.List;
 
@@ -11,5 +12,11 @@ public interface CvService {
     CvData getCvByName(String cvName);
 
     void postCv(CvData cvData);
+
+    CvPermissions getCvPermissions(String cvName);
+
+    void postCvPermissions(CvPermissions cvPermissions);
+
+    void deleteCvPermissionsForUser(String userName);
 
 }

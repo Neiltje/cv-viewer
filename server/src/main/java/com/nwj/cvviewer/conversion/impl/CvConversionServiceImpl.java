@@ -6,6 +6,8 @@ import com.nwj.cvviewer.conversion.CvConversionService;
 import com.nwj.cvviewer.data.entity.*;
 import com.nwj.cvviewer.model.Cv;
 import com.nwj.cvviewer.model.CvSummary;
+import com.nwj.cvviewer.service.CvService;
+import com.nwj.cvviewer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,13 @@ import java.util.stream.Collectors;
 public class CvConversionServiceImpl implements CvConversionService {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private CvService cvService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Cv convert(CvData cvData) {
@@ -67,6 +75,36 @@ public class CvConversionServiceImpl implements CvConversionService {
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public CvPermissions convert(com.nwj.cvviewer.model.CvPermissions cvPermissions) {
+        CvPermissions cvPermissionsApi = new CvPermissions();
+        cvPermissionsApi.setCvData(cvService.getCvByName(cvPermissions.getCvName()));
+        cvPermissionsApi.setOwner(userService.getUserDetails(cvPermissions.getCvOwner()));
+        cvPermissionsApi.setUsers(
+            Optional.ofNullable(cvPermissions.getCvUsers())
+                .stream()
+                .flatMap(Collection::stream)
+                .map(u -> userService.getUserDetails(u))
+                .collect(Collectors.toSet())
+        );
+        return cvPermissionsApi;
+    }
+
+    @Override
+    public com.nwj.cvviewer.model.CvPermissions convert(CvPermissions cvPermissions) {
+        com.nwj.cvviewer.model.CvPermissions cvPermissionsEntity = new com.nwj.cvviewer.model.CvPermissions();
+        cvPermissionsEntity.setCvName(cvPermissions.getCvData().getName());
+        cvPermissionsEntity.setCvOwner(cvPermissions.getOwner().getUserName());
+        cvPermissionsEntity.setCvUsers(
+                Optional.ofNullable(cvPermissions.getUsers())
+                        .stream()
+                        .flatMap(Collection::stream)
+                        .map(UserDetails::getUserName)
+                        .collect(Collectors.toList())
+        );
+        return cvPermissionsEntity;
     }
 
     @Override

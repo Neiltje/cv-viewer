@@ -2,6 +2,7 @@ package com.nwj.cvviewer.conversion;
 
 import com.nwj.cvviewer.data.entity.CvData;
 import com.nwj.cvviewer.model.Cv;
+import com.nwj.cvviewer.model.CvPermissions;
 import com.nwj.cvviewer.model.CvSummary;
 
 import java.util.List;
@@ -19,5 +20,9 @@ public interface CvConversionService {
     void updateReferences(List<CvData> cvDataList);
 
     CvData convert(Cv cv);
+
+    com.nwj.cvviewer.data.entity.CvPermissions convert(CvPermissions cvPermissions);
+
+    CvPermissions convert(com.nwj.cvviewer.data.entity.CvPermissions cvPermissions);
 
 }

@@ -12,6 +12,8 @@ public interface UserService {
 
     List<String> getAllUserNames();
 
+    UserDetails getUserDetails(String userName);
+
     void createUser(UserDetails userDetails);
 
     void updateUserRoles(String userName, String userRoles);

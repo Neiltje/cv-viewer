@@ -1,7 +1,12 @@
 package com.nwj.cvviewer.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class UserDetails extends CvBaseItem {
@@ -11,6 +16,7 @@ public class UserDetails extends CvBaseItem {
 	private String userName;
 	private String userPassword;
 	private String userRoles;
+	private Set<CvPermissions> permissions;
 
 	@Column
 	public String getUserName() {
@@ -39,4 +45,13 @@ public class UserDetails extends CvBaseItem {
 		this.userRoles = userRoles;
 	}
 
+	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+	@JsonIgnore
+	public Set<CvPermissions> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<CvPermissions> permissions) {
+		this.permissions = permissions;
+	}
 }
