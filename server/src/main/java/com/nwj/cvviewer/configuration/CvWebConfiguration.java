@@ -1,6 +1,5 @@
 package com.nwj.cvviewer.configuration;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -14,19 +13,25 @@ public class CvWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry
+            .addMapping("/**")
+            .allowedMethods("PUT", "GET", "DELETE", "OPTIONS", "PATCH", "POST");
     }
 
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://angular-cv-viewer-http.stackblitz.io");
-        config.addAllowedOrigin("https://www.cv-viewer.co.uk");
-        config.addAllowedOrigin("https://www.cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.addAllowedOrigin("*"); // this allows all origin
+        config.addAllowedHeader("*"); // this allows all headers
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PATCH");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

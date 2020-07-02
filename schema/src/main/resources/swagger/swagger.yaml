@@ -10,8 +10,8 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 #host: "localhost:9090"
-#host: "cv-viewer.co.uk"
-host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
+host: "www.cv-viewer.co.uk"
+#host: "cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com"
 tags:
   - name: "user"
     description: "Everything about users"

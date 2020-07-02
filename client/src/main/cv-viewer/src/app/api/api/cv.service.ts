@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { Cv } from '../model/cv';
+import { CvPermissions } from '../model/cvPermissions';
 import { CvSummary } from '../model/cvSummary';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -28,8 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class CvService {
 
-    protected basePath = 'https://cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com';
-//    protected basePath = 'https://localhost:9090';
+    protected basePath = 'https://www.cv-viewer.co.uk';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -130,7 +130,54 @@ export class CvService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Cv>(`${this.basePath}/cv/findByName/`,
+        return this.httpClient.get<Cv>(`${this.basePath}/cv/findByName`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get CV permissions by CV name
+     * Get the CV permissions for a given CV name
+     * @param name
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCvPermissions(name: string, observe?: 'body', reportProgress?: boolean): Observable<CvPermissions>;
+    public getCvPermissions(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CvPermissions>>;
+    public getCvPermissions(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CvPermissions>>;
+    public getCvPermissions(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling getCvPermissions.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (name !== undefined && name !== null) {
+            queryParameters = queryParameters.set('name', <any>name);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<CvPermissions>(`${this.basePath}/cv/permissions`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -184,6 +231,52 @@ export class CvService {
 
         return this.httpClient.post<string>(`${this.basePath}/cv`,
             cv,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Write or update CV permissions
+     * Write or update the CV permissions
+     * @param cvPermissions
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public postCvPermissions(cvPermissions: CvPermissions, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public postCvPermissions(cvPermissions: CvPermissions, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public postCvPermissions(cvPermissions: CvPermissions, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public postCvPermissions(cvPermissions: CvPermissions, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (cvPermissions === null || cvPermissions === undefined) {
+            throw new Error('Required parameter cvPermissions was null or undefined when calling postCvPermissions.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<string>(`${this.basePath}/cv/permissions`,
+            cvPermissions,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
