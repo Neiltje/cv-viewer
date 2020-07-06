@@ -11,6 +11,10 @@ public interface CvService {
 
     CvData getCvByName(String cvName);
 
+    CvData getNewCvTemplate();
+
+    void deleteCvByName(String cvName);
+
     void postCv(CvData cvData);
 
     CvPermissions getCvPermissions(String cvName);

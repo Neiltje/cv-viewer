@@ -15,10 +15,16 @@ export class CvSkillsComponent implements OnInit {
   @Input() skills;
 
   @Output() textNotify = new EventEmitter<string>();
+  @Output() nameNotify = new EventEmitter<string>();
 
   updateText(text: string) {
     this.text = text;
     this.textNotify.emit(this.text);
+  }
+  
+  updateName(name: string) {
+    this.name = name;
+    this.nameNotify.emit(this.name);
   }
 
   reSequenceSkillsGroup() {

@@ -5,6 +5,7 @@
     <tr>
       <th class="nameWidth">Name</th>
       <th>Summary</th>
+      <th *ngIf="authenticationService.authenticated">Delete ?</th>
     </tr>
     <tr>
       <td>
@@ -14,12 +15,21 @@
         <input (keyup)="onKeySummary($event)" placeholder="Filter summary text ...">
       </td>
     </tr>
-    <tr *ngFor="let cv of cvList | async | callback: filter:'name':nameFilter | callback: filter:'oneLineSummary':summaryFilter | orderBy: 'name'">
+    <tr *ngFor="let cv of cvList | callback: filter:'name':nameFilter | callback: filter:'oneLineSummary':summaryFilter | orderBy: 'name'">
       <td>
         <a [title]="cv.name + '\'s CV'" [routerLink]="['/cvs', cv.name]">{{ cv.name }}</a>
       </td>
       <td>
         <a [title]="cv.name + '\'s CV'" [routerLink]="['/cvs', cv.name]">{{ cv.oneLineSummary }}</a>
       </td>
+      <td *ngIf="canDelete(cv)" class="centre">
+        <a (click)="deleteCv(cv)" [title]="'Delete CV ' + cv.name">
+          <mat-icon aria-hidden="false">remove</mat-icon>
+        </a>
+      </td>
     </tr>
 </table>
+<br>
+<a *ngIf="authenticationService.authenticated"  [routerLink]="['/cvs', 'New CV']">
+  <mat-icon matTooltip="Add new CV">add</mat-icon>
+</a>

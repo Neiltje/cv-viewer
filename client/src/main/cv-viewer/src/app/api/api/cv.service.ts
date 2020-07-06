@@ -59,6 +59,52 @@ export class CvService {
 
 
     /**
+     * Delete CV by name
+     * Delete a CV defined on the system by name
+     * @param cvName 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteCvByName(cvName: string, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public deleteCvByName(cvName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public deleteCvByName(cvName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public deleteCvByName(cvName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (cvName === null || cvName === undefined) {
+            throw new Error('Required parameter cvName was null or undefined when calling deleteCvByName.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.delete<string>(`${this.basePath}/cv/${encodeURIComponent(String(cvName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all CV summaries
      * Get a summary for all CVs defined on the system
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -97,22 +143,17 @@ export class CvService {
     /**
      * Get CV by name
      * Get a CV defined on the system by name
-     * @param name
+     * @param cvName 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCvByName(name: string, observe?: 'body', reportProgress?: boolean): Observable<Cv>;
-    public getCvByName(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Cv>>;
-    public getCvByName(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Cv>>;
-    public getCvByName(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCvByName(cvName: string, observe?: 'body', reportProgress?: boolean): Observable<Cv>;
+    public getCvByName(cvName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Cv>>;
+    public getCvByName(cvName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Cv>>;
+    public getCvByName(cvName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getCvByName.');
-        }
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (name !== undefined && name !== null) {
-            queryParameters = queryParameters.set('name', <any>name);
+        if (cvName === null || cvName === undefined) {
+            throw new Error('Required parameter cvName was null or undefined when calling getCvByName.');
         }
 
         let headers = this.defaultHeaders;
@@ -130,9 +171,8 @@ export class CvService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Cv>(`${this.basePath}/cv/findByName`,
+        return this.httpClient.get<Cv>(`${this.basePath}/cv/${encodeURIComponent(String(cvName))}`,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -144,23 +184,59 @@ export class CvService {
     /**
      * Get CV permissions by CV name
      * Get the CV permissions for a given CV name
-     * @param name
+     * @param cvName 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCvPermissions(name: string, observe?: 'body', reportProgress?: boolean): Observable<CvPermissions>;
-    public getCvPermissions(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CvPermissions>>;
-    public getCvPermissions(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CvPermissions>>;
-    public getCvPermissions(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCvPermissions(cvName: string, observe?: 'body', reportProgress?: boolean): Observable<CvPermissions>;
+    public getCvPermissions(cvName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CvPermissions>>;
+    public getCvPermissions(cvName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CvPermissions>>;
+    public getCvPermissions(cvName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling getCvPermissions.');
+        if (cvName === null || cvName === undefined) {
+            throw new Error('Required parameter cvName was null or undefined when calling getCvPermissions.');
         }
 
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (name !== undefined && name !== null) {
-            queryParameters = queryParameters.set('name', <any>name);
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<CvPermissions>(`${this.basePath}/cv/permissions/${encodeURIComponent(String(cvName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the new CV template
+     * Get the new CV template
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getNewCvTemplate(observe?: 'body', reportProgress?: boolean): Observable<Cv>;
+    public getNewCvTemplate(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Cv>>;
+    public getNewCvTemplate(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Cv>>;
+    public getNewCvTemplate(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -177,9 +253,8 @@ export class CvService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<CvPermissions>(`${this.basePath}/cv/permissions`,
+        return this.httpClient.get<Cv>(`${this.basePath}/cv/getNewCvTemplate`,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -191,7 +266,7 @@ export class CvService {
     /**
      * Write or update a CV
      * Write or update a CV
-     * @param cv
+     * @param cv 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -243,7 +318,7 @@ export class CvService {
     /**
      * Write or update CV permissions
      * Write or update the CV permissions
-     * @param cvPermissions
+     * @param cvPermissions 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -257,6 +332,11 @@ export class CvService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [

@@ -239,6 +239,56 @@ paths:
           schema:
             type: string
 
+  /cv/{cvName}:
+    get:
+      tags:
+        - "cv"
+      summary: "Get CV by name"
+      description: "Get a CV defined on the system by name"
+      operationId: getCvByName
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "cvName"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/cv"
+        "400":
+          description: "Invalid status value"
+    delete:
+      tags:
+        - "cv"
+      summary: "Delete CV by name"
+      description: "Delete a CV defined on the system by name"
+      operationId: deleteCvByName
+      produces:
+        - "application/json"
+      security:
+        - basicAuth: []
+      parameters:
+        - in: "path"
+          name: "cvName"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: string
+        "400":
+          description: "Invalid status value"
+          schema:
+            type: string
+        "500":
+          description: "Internal Server Error"
+          schema:
+            type: string
+
   /cv/getAllCVSummaries:
     get:
       tags:
@@ -258,20 +308,15 @@ paths:
         "400":
           description: "Invalid status value"
 
-  /cv/findByName:
+  /cv/getNewCvTemplate:
     get:
       tags:
         - "cv"
-      summary: "Get CV by name"
-      description: "Get a CV defined on the system by name"
-      operationId: getCvByName
+      summary: "Get the new CV template"
+      description: "Get the new CV template"
+      operationId: getNewCvTemplate
       produces:
         - "application/json"
-      parameters:
-        - in: "query"
-          name: "name"
-          required: true
-          type: string
       responses:
         "200":
           description: "successful operation"
@@ -280,7 +325,7 @@ paths:
         "400":
           description: "Invalid status value"
 
-  /cv/permissions:
+  /cv/permissions/{cvName}:
     get:
       tags:
         - "cv"
@@ -289,9 +334,11 @@ paths:
       operationId: getCvPermissions
       produces:
         - "application/json"
+      security:
+        - basicAuth: []
       parameters:
-        - in: "query"
-          name: "name"
+        - in: "path"
+          name: "cvName"
           required: true
           type: string
       responses:
@@ -302,6 +349,7 @@ paths:
         "400":
           description: "Invalid status value"
 
+  /cv/permissions:
     post:
       tags:
         - "cv"
@@ -310,6 +358,8 @@ paths:
       operationId: postCvPermissions
       consumes:
         - "application/json"
+      security:
+        - basicAuth: []
       parameters:
         - in: "body"
           name: "cvPermissions"
@@ -329,7 +379,6 @@ paths:
           description: "Internal Server Error"
           schema:
             type: string
-
 
 definitions:
 
@@ -369,6 +418,8 @@ definitions:
       name:
         type: "string"
       oneLineSummary:
+        type: "string"
+      owner:
         type: "string"
 
   cv:

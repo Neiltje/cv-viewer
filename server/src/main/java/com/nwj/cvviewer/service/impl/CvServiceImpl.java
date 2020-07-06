@@ -18,10 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +88,31 @@ public class CvServiceImpl implements CvService {
     }
 
     @Override
+    public CvData getNewCvTemplate() {
+        return dataLoader.loadDataItem("data/newUserCv.json", CvData.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCvByName(String cvName) {
+        LOGGER.info("Deleting CV from repository with name = \"{}\".", cvName);
+        CvData existingCvData = getCvByName(cvName);
+        if (existingCvData != null) {
+            LOGGER.info("Deleting existing CV with name = \"{}\" ...", cvName);
+            cvRepository.delete(existingCvData);
+            LOGGER.info("Existing CV with name = \"{}\" deleted.", cvName);
+        } else {
+            throw new RuntimeException("Cannot delete CV with name \"" + cvName + "\" - CV does not exist.");
+        }
+        CvPermissions existingCvPermissions = getCvPermissions(cvName);
+        if (existingCvPermissions != null) {
+            LOGGER.info("Deleting existing CV permissions with name = \"{}\" ...", cvName);
+            cvPermissionsRepository.delete(existingCvPermissions);
+            LOGGER.info("Existing CV permissions with name = \"{}\" deleted.", cvName);
+        }
+    }
+
+    @Override
     @Transactional
     public void postCv(CvData cvData) {
         LOGGER.info("Saving CV with name = \"{}\".", cvData.getName());
@@ -108,13 +130,15 @@ public class CvServiceImpl implements CvService {
     @Transactional
     public CvPermissions getCvPermissions(String cvName) {
         LOGGER.info("Getting CV permissions from repository for CV with name = \"{}\".", cvName);
-        return cvPermissionsRepository.findByCvName(cvName);
+        CvPermissions cvPermissions = cvPermissionsRepository.findByCvName(cvName);
+        LOGGER.info("CV permissions retrieved: {}", cvPermissions);
+        return cvPermissions;
     }
 
     @Override
     @Transactional
     public void postCvPermissions(CvPermissions cvPermissions) {
-        LOGGER.info("Saving CV permissions to repository for CV with name = \"{}\".", cvPermissions.getCvData().getName());
+        LOGGER.info("Saving CV permissions: \"{}\".", cvPermissions);
         CvPermissions existingCvPermissions = cvPermissionsRepository.findByCvName(cvPermissions.getCvData().getName());
         if (existingCvPermissions != null) {
             existingCvPermissions.setOwner(cvPermissions.getOwner());

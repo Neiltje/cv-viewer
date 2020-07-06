@@ -1,4 +1,4 @@
-<div id="main-content">
+<div>
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>Summary</ng-template>
@@ -8,7 +8,9 @@
           [text] = "cv.summary"
           [image] = "cv.image"
           [header] = "cv.header"
-          (textNotify) = "updateSummaryText($event)">
+          (textNotify) = "updateSummaryText($event)"
+          (nameNotify) = "updateSummaryName($event)"
+          (oneLineSummaryNotify) = "updateOneLineSummary($event)">
         </app-cv-summary>
       </div>
     </mat-tab>
@@ -20,7 +22,8 @@
           [text] = "cv.education.notes"
           [image] = "cv.image"
           [education] = "cv.education"
-          (textNotify) = "updateEducationText($event)">
+          (textNotify) = "updateEducationText($event)"
+          (nameNotify) = "updateSummaryName($event)">
         </app-cv-education>
       </div>
     </mat-tab>
@@ -32,7 +35,8 @@
           [text] = "cv.skills.notes"
           [image] = "cv.image"
           [skills] = "cv.skills"
-          (textNotify) = "updateSkillsText($event)">
+          (textNotify) = "updateSkillsText($event)"
+          (nameNotify) = "updateSummaryName($event)">
         </app-cv-skills>
       </div>
     </mat-tab>
@@ -44,7 +48,8 @@
           [text] = "cv.employment.notes"
           [image] = "cv.image"
           [employment] = "cv.employment"
-          (textNotify) = "updateEmploymentText($event)">
+          (textNotify) = "updateEmploymentText($event)"
+          (nameNotify) = "updateSummaryName($event)">
         </app-cv-employment>
       </div>
     </mat-tab>
@@ -56,7 +61,8 @@
           [text] = "cv.summary"
           [image] = "cv.image"
           [interests] = "cv.interests"
-          (textNotify) = "updateInterestsText($event)">
+          (textNotify) = "updateInterestsText($event)"
+          (nameNotify) = "updateSummaryName($event)">
         </app-cv-interests>
       </div>
     </mat-tab>

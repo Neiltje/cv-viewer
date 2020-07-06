@@ -35,13 +35,43 @@ public class CvApiController implements CvApi {
     @Override
     public ResponseEntity<List<CvSummary>> getAllCVSummaries() {
         List<CvData> cvList = cvService.getAllCvs();
-        return ResponseEntity.ok(cvConversionService.convert(cvList));
+        List<CvSummary> cvSummaryList = cvConversionService.convert(cvList);
+        cvSummaryList.forEach(c -> {
+            String ownerName;
+            com.nwj.cvviewer.data.entity.CvPermissions cvPermissions = cvService.getCvPermissions(c.getName());
+            if (cvPermissions != null) {
+                ownerName = cvPermissions.getOwner().getUserName();
+            } else {
+                ownerName = "Neil";
+            }
+            c.setOwner(ownerName);
+        });
+        return ResponseEntity.ok(cvSummaryList);
     }
 
     @Override
     public ResponseEntity<Cv> getCvByName(String name) {
         CvData cvData = cvService.getCvByName(name);
         return ResponseEntity.ok(cvConversionService.convert(cvData));
+    }
+
+    @Override
+    public ResponseEntity<Cv> getNewCvTemplate() {
+        CvData cvData = cvService.getNewCvTemplate();
+        return ResponseEntity.ok(cvConversionService.convert(cvData));
+    }
+
+    @Override
+    public ResponseEntity<String> deleteCvByName(String name) {
+        try {
+            cvService.deleteCvByName(name);
+            return ResponseEntity.ok().build();
+        } catch (Exception ex) {
+            LOGGER.error("Error encountered while deleting CV name = \"{}\"", name, ex);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ServiceUtils.getUnderlyingCause(ex).getMessage());
+        }
     }
 
     @Override

@@ -1,8 +1,10 @@
 import { Injectable, ViewContainerRef, Output, EventEmitter } from '@angular/core';
 import { Cv } from './api/index';
+import { CvPermissions } from './api/index';
 import { CvService } from './api/index'
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CvJsonComponent } from './cv-json/cv-json.component';
+import { AuthenticationService } from './authentication.service'
 
 @Injectable()
 export class DataService {
@@ -14,7 +16,8 @@ export class DataService {
 
   constructor(
       private cvService: CvService,
-      private dialog: MatDialog
+      private dialog: MatDialog,
+      private authenticationService: AuthenticationService
   ) { }
 
   switchMode() {
@@ -23,6 +26,10 @@ export class DataService {
 
   setEditOff() {
     this.editMode = false;
+  }
+
+  setEditOn() {
+    this.editMode = true;
   }
 
   hasCv() {
@@ -43,13 +50,44 @@ export class DataService {
   }
 
   saveCv() {
-
     this.cvService.postCv(this.cv).subscribe(
-      response => {},
+      response => {
+        this.cvService.getCvPermissions(this.cv.name).subscribe(
+          response => {
+            if (response == undefined) {
+              let cvPermissions = {
+                cvName: this.cv.name,
+                cvOwner: this.authenticationService.userName
+              };
+              this.cvService.postCvPermissions(cvPermissions).subscribe();
+            }
+          },
+          error => {
+              let cvPermissions = {
+                cvName: this.cv.name,
+                cvOwner: this.authenticationService.userName
+              };
+              this.cvService.postCvPermissions(cvPermissions).subscribe();
+          }
+        );
+      },
       error => {
         window.alert("Unable to save CV - see server logs for more details:" + error.error);
       });
     this.editMode = false;
+  }
+
+  deleteCv(cvName: string) {
+    this.cvService.deleteCvByName(cvName).subscribe(
+      response => {},
+      error => {
+        window.alert("Unable to delete CV - see server logs for more details:" + error.error);
+      });
+    this.editMode = false;
+  }
+
+  getNewCvTemplate() {
+    return this.cvService.getNewCvTemplate();
   }
 
   setImage(image: string) {

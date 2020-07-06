@@ -10,11 +10,14 @@ export class CvSummaryComponent implements OnInit {
 
   title = "Summary";
   @Input() name;
+  @Input() oneLineSummary;
   @Input() text;
   @Input() image;
   @Input() header;
 
   @Output() textNotify = new EventEmitter<string>();
+  @Output() nameNotify = new EventEmitter<string>();
+  @Output() oneLineSummaryNotify = new EventEmitter<string>();
 
   datePicker;
 
@@ -25,6 +28,15 @@ export class CvSummaryComponent implements OnInit {
   updateText(text: string) {
     this.text = text;
     this.textNotify.emit(this.text);
+  }
+  
+  updateName(name: string) {
+    this.name = name;
+    this.nameNotify.emit(this.name);
+  }
+  
+  updateOneLineSummary() {
+    this.oneLineSummaryNotify.emit(this.oneLineSummary);
   }
 
   updateAddressLine(addressLine, i) {

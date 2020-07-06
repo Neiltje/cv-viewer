@@ -1,26 +1,35 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Cv } from '../api/index';
-import { CvService } from '../api/index'
-import { DataService } from '../data.service';
+import { Component, OnInit, Output } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Cv } from "../api/index";
+import { CvService } from "../api/index";
+import { DataService } from "../data.service";
 
 @Component({
-  selector: 'app-cv',
-  templateUrl: './cv.component.html',
-  styleUrls: ['./cv.component.scss']
+  selector: "app-cv",
+  templateUrl: "./cv.component.html",
+  styleUrls: ["./cv.component.scss"]
 })
 export class CvComponent implements OnInit {
 
   cv: Cv;
+  cvNewUser: Cv;
 
   constructor(
     private route: ActivatedRoute,
     private cvService: CvService,
     public dataService: DataService
-  ) { }
+  ) {}
 
   updateSummaryText(text: string) {
     this.cv.summary = text;
+  }
+
+  updateSummaryName(name: string) {
+    this.cv.name = name;
+  }
+
+  updateOneLineSummary(oneLineSummary: string) {
+    this.cv.oneLineSummary = oneLineSummary;
   }
 
   updateEducationText(text: string) {
@@ -50,14 +59,22 @@ export class CvComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.cvService.getCvByName(params.get('cvName')).subscribe((cv) => {
-        this.cv = cv;
-        this.dataService.setCv(this.cv);
-      });
+      const cvName: string = params.get("cvName");
+      if (cvName == "New CV") {
+        this.dataService.getNewCvTemplate().subscribe((response) => {
+          this.cv = response;
+          this.dataService.setCv(this.cv);
+        });
+        this.dataService.setEditOn();
+      } else {
+        this.cvService.getCvByName(cvName).subscribe(cv => {
+          this.cv = cv;
+          this.dataService.setCv(this.cv);
+        });
+      }
     });
     this.dataService.getImageNotify().subscribe(image => {
       this.cv.image = image;
     });
   }
-
 }

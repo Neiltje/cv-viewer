@@ -14,4 +14,5 @@
 export interface CvSummary { 
     name?: string;
     oneLineSummary?: string;
+    owner?: string;
 }

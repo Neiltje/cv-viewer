@@ -3,7 +3,8 @@
   [name] = "name"
   [text] = "text"
   [image] = "image"
-  (textNotify) = "updateText($event)">
+  (textNotify) = "updateText($event)"
+  (nameNotify) = "updateName($event)">
 </app-cv-heading>
 
 <br>
@@ -17,6 +18,13 @@
         <col span="1" style="width: 2%;">
         <col span="1" style="width: 68%;">
       </colgroup>
+      <tr *ngIf="dataService.editMode">
+        <td>One line summary</td>
+        <td>:</td>
+        <td>
+          <input type="text" name="oneLineSummary" [(ngModel)]="oneLineSummary" (keyup)="updateOneLineSummary()" class="editable"/>
+        </td>
+      </tr>
       <tr>
         <td>Date of Birth</td>
         <td>:</td>
@@ -26,6 +34,7 @@
             (dateNotify) = "updateDate($event)">
           </app-datepicker>
         </td>
+        <br><br><br>
       </tr>
       <tr>
         <td>Current Position</td>

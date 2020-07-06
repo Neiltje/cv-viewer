@@ -1,9 +1,12 @@
 
 <div class="outerDiv">
   <div class="titleImg">
-    <h2> {{ name }} </h2>
+    <h2>
+      <input *ngIf="dataService.editMode" type="text" (keyup)="changeNameMessage()" name="name" [(ngModel)]="name" class="editable"/>
+      <span *ngIf="!dataService.editMode">{{ name }}</span>
+    </h2>
     <img *ngIf="image" src="{{'data:image/jpg;base64,' + image}}" />
-    <p *ngIf="!image">No image provided.</p>
+    <p *ngIf="!image" class="noImage">No image provided.</p>
     <div *ngIf="dataService.editMode">
       <label for="imageInput" class="imageButton">Select</label>
       <input id="imageInput" #imageInput
@@ -16,7 +19,7 @@
     <h2>{{ title }}</h2>
     <br/>
     <mat-form-field *ngIf="dataService.editMode" class="editable">
-      <textarea name="text" matInput [(ngModel)]="text" (keyup)="changeMessage()"></textarea>
+      <textarea name="text" matInput [(ngModel)]="text" (keyup)="changeTextMessage()"></textarea>
     </mat-form-field>
     <span *ngIf="!dataService.editMode">{{ text }}</span>
     <p *ngIf="!dataService.editMode && !text">No details provided.</p>

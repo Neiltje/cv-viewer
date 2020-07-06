@@ -14,13 +14,18 @@ export class CvHeadingComponent implements OnInit {
   @Input() image;
 
   @Output() textNotify = new EventEmitter<string>();
+  @Output() nameNotify = new EventEmitter<string>();
 
   constructor(
     public dataService: DataService
   ) { }
 
-  changeMessage() {
+  changeTextMessage() {
     this.textNotify.emit(this.text);
+  }
+
+  changeNameMessage() {
+    this.nameNotify.emit(this.name);
   }
 
   processFile(imageInput: any) {

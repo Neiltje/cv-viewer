@@ -35,9 +35,11 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/cv/getAllCVSummaries", "/cv/findByName/*", "cv/permissions/*").permitAll()
+            .antMatchers(HttpMethod.GET, "/cv/getAllCVSummaries", "/cv/*", "/cv/getNewCvTemplate").permitAll()
             .antMatchers(HttpMethod.POST, "/cv").authenticated()
-            .antMatchers(HttpMethod.POST, "/cv/permissions").permitAll()
+            .antMatchers(HttpMethod.DELETE, "/cv/*").authenticated()
+            .antMatchers(HttpMethod.GET, "/cv/permissions/*").authenticated()
+            .antMatchers(HttpMethod.POST, "/cv/permissions").authenticated()
             .antMatchers(HttpMethod.POST, "/user/login/*").authenticated()
             .antMatchers(HttpMethod.POST, "/user").authenticated()
             .antMatchers(HttpMethod.POST, "/user/roles").authenticated()
@@ -52,6 +54,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         .and()
             .httpBasic()
             .authenticationEntryPoint(authenticationEntryPoint)
+        .and()
+            .logout()
         .and()
             .cors();
     }

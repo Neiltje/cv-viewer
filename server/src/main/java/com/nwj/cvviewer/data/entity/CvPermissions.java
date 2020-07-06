@@ -6,8 +6,11 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class CvPermissions extends CvBaseItem {
@@ -55,4 +58,17 @@ public class CvPermissions extends CvBaseItem {
 	public void setUsers(Set<UserDetails> users) {
 		this.users = users;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("CV permissions retrieved: name=%s, owner=%s, users=%s",
+				getCvData().getName(),
+				getOwner().getUserName(),
+				Optional.ofNullable(getUsers())
+						.stream()
+						.flatMap(Collection::stream)
+						.map(UserDetails::getUserName)
+						.collect(Collectors.toList()));
+	}
+
 }

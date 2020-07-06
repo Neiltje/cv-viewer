@@ -94,16 +94,21 @@ public class CvConversionServiceImpl implements CvConversionService {
 
     @Override
     public com.nwj.cvviewer.model.CvPermissions convert(CvPermissions cvPermissions) {
-        com.nwj.cvviewer.model.CvPermissions cvPermissionsEntity = new com.nwj.cvviewer.model.CvPermissions();
-        cvPermissionsEntity.setCvName(cvPermissions.getCvData().getName());
-        cvPermissionsEntity.setCvOwner(cvPermissions.getOwner().getUserName());
-        cvPermissionsEntity.setCvUsers(
-                Optional.ofNullable(cvPermissions.getUsers())
-                        .stream()
-                        .flatMap(Collection::stream)
-                        .map(UserDetails::getUserName)
-                        .collect(Collectors.toList())
-        );
+        com.nwj.cvviewer.model.CvPermissions cvPermissionsEntity;
+        if (cvPermissions != null) {
+            cvPermissionsEntity = new com.nwj.cvviewer.model.CvPermissions();
+            cvPermissionsEntity.setCvName(cvPermissions.getCvData().getName());
+            cvPermissionsEntity.setCvOwner(cvPermissions.getOwner().getUserName());
+            cvPermissionsEntity.setCvUsers(
+                    Optional.ofNullable(cvPermissions.getUsers())
+                            .stream()
+                            .flatMap(Collection::stream)
+                            .map(UserDetails::getUserName)
+                            .collect(Collectors.toList())
+            );
+        } else {
+            cvPermissionsEntity = null;
+        }
         return cvPermissionsEntity;
     }
 

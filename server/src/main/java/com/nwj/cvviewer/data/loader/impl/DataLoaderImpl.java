@@ -1,7 +1,6 @@
 package com.nwj.cvviewer.data.loader.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nwj.cvviewer.data.entity.CvData;
 import com.nwj.cvviewer.data.loader.DataLoader;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,18 @@ public class DataLoaderImpl implements DataLoader {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Override
+    public <T> T loadDataItem(String path, Class<T> itemCLass) {
+        try {
+            ClassPathResource classPathResource = new ClassPathResource(path);
+            InputStream inputStream = classPathResource.getInputStream();
+            String jsonString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            return objectMapper.readValue(jsonString, itemCLass);
+        } catch (Exception ex) {
+            throw new RuntimeException("Unable to load data from file.", ex);
+        }
+    }
 
     @Override
     public <T> List<T> loadData(String path, Class<T> itemClass) {

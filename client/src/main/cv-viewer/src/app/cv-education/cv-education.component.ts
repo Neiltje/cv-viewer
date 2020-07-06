@@ -15,12 +15,18 @@ export class CvEducationComponent implements OnInit {
   @Input() education;
 
   @Output() textNotify = new EventEmitter<string>();
+  @Output() nameNotify = new EventEmitter<string>();
   
   updateText(text: string) {
     this.text = text;
     this.textNotify.emit(this.text);
   }
-
+  
+  updateName(name: string) {
+    this.name = name;
+    this.nameNotify.emit(this.name);
+  }
+  
   updateStartDate(i, date: Date) {
     this.education.institutions[i].startDate = date;
   }

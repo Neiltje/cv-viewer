@@ -61,7 +61,7 @@ export class UserService {
     /**
      * Create a new user
      * User create
-     * @param user
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -113,7 +113,7 @@ export class UserService {
     /**
      * Delete user
      * User delete
-     * @param userName
+     * @param userName 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -199,7 +199,7 @@ export class UserService {
     /**
      * Get the roles for a user
      * Get user roles
-     * @param userName
+     * @param userName 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -250,7 +250,7 @@ export class UserService {
     /**
      * Login to CV Viewer for updates
      * Login
-     * @param userName
+     * @param userName 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -296,7 +296,7 @@ export class UserService {
     /**
      * Update password for a user
      * User password
-     * @param user
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -348,7 +348,7 @@ export class UserService {
     /**
      * Update roles for a user
      * User roles
-     * @param user
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
