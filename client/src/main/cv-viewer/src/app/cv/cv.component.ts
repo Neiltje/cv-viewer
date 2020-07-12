@@ -71,6 +71,9 @@ export class CvComponent implements OnInit {
           this.cv = cv;
           this.dataService.setCv(this.cv);
         });
+        this.cvService.getCvPermissions(cvName).subscribe(cvPermissions => {
+          this.dataService.setCvPermissions(cvPermissions);
+        });
       }
     });
     this.dataService.getImageNotify().subscribe(image => {

@@ -42,7 +42,7 @@ export class CvListComponent implements OnInit {
   }
 
   deleteCv(cv: CvSummary) {
-    if(window.confirm('Are sure you want to delete CV for ' + cv.name + '?')){
+    if (window.confirm('Are sure you want to delete CV for ' + cv.name + '?')){
       this.dataService.deleteCv(cv.name);
       const index = this.cvList.indexOf(cv, 0);
       if (index > -1) {

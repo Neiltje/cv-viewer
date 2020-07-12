@@ -7,6 +7,7 @@ import { CvUserCreateComponent } from '../cv-user-create/cv-user-create.componen
 import { CvUserPasswordComponent } from '../cv-user-password/cv-user-password.component';
 import { CvUserRolesComponent } from '../cv-user-roles/cv-user-roles.component';
 import { CvUserDeleteComponent } from '../cv-user-delete/cv-user-delete.component';
+import { CvPermissionsComponent } from '../cv-permissions/cv-permissions.component';
 
 @Component({
   selector: 'cv-top-bar',
@@ -37,7 +38,7 @@ export class CvTopBarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = "220px";
+    dialogConfig.height = "240px";
     dialogConfig.width = "450px";
     this.dialog.open(CvLoginComponent, dialogConfig);
   }
@@ -55,7 +56,7 @@ export class CvTopBarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = "260px";
+    dialogConfig.height = "300px";
     dialogConfig.width = "450px";
     this.dialog.open(CvUserPasswordComponent, dialogConfig);
   }
@@ -64,7 +65,7 @@ export class CvTopBarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.height = "280px";
+    dialogConfig.height = "300px";
     dialogConfig.width = "450px";
     this.dialog.open(CvUserRolesComponent, dialogConfig);
   }
@@ -76,6 +77,15 @@ export class CvTopBarComponent implements OnInit {
     dialogConfig.height = "180px";
     dialogConfig.width = "450px";
     this.dialog.open(CvUserDeleteComponent, dialogConfig);
+  }
+
+  changeCvPermissions() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.height = "300px";
+    dialogConfig.width = "450px";
+    this.dialog.open(CvPermissionsComponent, dialogConfig);
   }
 
   logout() {

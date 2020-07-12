@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>
+  Change CV permissions.
+</h2>
+<mat-dialog-content class="fullWidth floatLeft">
+  <form [formGroup]="userForm" (ngSubmit)="updatePermissions(userForm.value)">
+    <table class="fullWidth">
+      <colgroup>
+        <col span="1" style="width: 35%;">
+        <col span="1" style="width: 2%;">
+        <col span="1" style="width: 63%;">
+      </colgroup>
+      <tr>
+        <td>CV name</td>
+        <td>:</td>
+        <td>
+          <select formControlName="cvName" (change)="setCvName($event)" class="editable">
+            <option *ngFor="let cvName of availableCvNames">{{ cvName }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>CV owner</td>
+        <td>:</td>
+        <td>
+          <select [attr.disabled]="!canEdit ? 'disabled' : null" formControlName="cvOwner" (change)="setCvOwner($event)" class="editable">
+            <option *ngFor="let cvOwner of allUsers">{{ cvOwner }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="top">CV users</td>
+        <td class="top">:</td>
+        <td>
+          <div formArrayName="cvUsers">
+            <div *ngFor="let cvUser of cvUsers.controls; let i = index">
+              <select [attr.disabled]="!canEdit ? 'disabled' : null" [formControlName]="i" (change)="removeDuplicateUsers()" class="editable">
+                <option [value]="availableUserName" *ngFor="let availableUserName of availableUserNames">{{ availableUserName }}</option>
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <div>
+      <button type="submit" class="mat-raised-button">Update</button>
+      <button type="button" class="mat-raised-button" (click)="close()">Close</button>
+    </div>
+    <br>
+    <div *ngFor="let error of userErrors" class="errorMessage">
+      {{ error }}
+    </div>
+  </form>
+</mat-dialog-content>

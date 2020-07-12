@@ -13,7 +13,7 @@
   <a *ngIf="authenticationService.authenticated" (click)="logout()">
     <mat-icon matTooltip='{{authenticationService.userName}} - Logout' aria-hidden="false">face</mat-icon>
   </a>
-  <a *ngIf="dataService.hasCv() && authenticationService.authenticated" (click)="switchMode()">
+  <a *ngIf="dataService.canEdit()" (click)="switchMode()">
     <mat-icon matTooltip="Toggle edit mode" aria-hidden="false">edit</mat-icon>
   </a>
   <a *ngIf="dataService.editMode && authenticationService.authenticated" (click)="saveCv()">
@@ -43,6 +43,10 @@
         <button *ngIf="authenticationService.isAdmin()" mat-menu-item (click)="deleteUser()">
           <mat-icon class="dropdownIcon">person</mat-icon>
           <span>Delete user</span>
+        </button>
+        <button mat-menu-item (click)="changeCvPermissions()">
+          <mat-icon class="dropdownIcon">book</mat-icon>
+          <span>Change CV permissions</span>
         </button>
       </span>
     </mat-menu>

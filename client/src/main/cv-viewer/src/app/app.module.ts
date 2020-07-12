@@ -48,6 +48,7 @@ import { UserDetailsService } from './user-details.service';
 import { CvUserPasswordComponent } from './cv-user-password/cv-user-password.component';
 import { CvUserRolesComponent } from './cv-user-roles/cv-user-roles.component';
 import { CvUserDeleteComponent } from './cv-user-delete/cv-user-delete.component';
+import { CvPermissionsComponent } from './cv-permissions/cv-permissions.component';
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { CvUserDeleteComponent } from './cv-user-delete/cv-user-delete.component
      CvUserCreateComponent,
      CvUserPasswordComponent,
      CvUserRolesComponent,
-     CvUserDeleteComponent
+     CvUserDeleteComponent,
+     CvPermissionsComponent
   ],
   bootstrap: [
     AppComponent
@@ -122,7 +124,8 @@ import { CvUserDeleteComponent } from './cv-user-delete/cv-user-delete.component
     CvUserCreateComponent,
     CvUserPasswordComponent,
     CvUserRolesComponent,
-    CvUserDeleteComponent
+    CvUserDeleteComponent,
+    CvPermissionsComponent
   ]
 })
 export class AppModule { }

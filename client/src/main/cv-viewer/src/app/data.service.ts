@@ -11,6 +11,7 @@ export class DataService {
 
   public editMode: boolean = false;
   cv: Cv;
+  cvPermissions: CvPermissions;
 
   @Output() imageNotify = new EventEmitter<string>();
 
@@ -40,8 +41,17 @@ export class DataService {
     this.cv = cv;
   }
 
+  setCvPermissions(cvPermissions: CvPermissions) {
+    this.cvPermissions = cvPermissions;
+  }
+
+  getCvPermissions() {
+    return this.cvPermissions;
+  }
+
   unsetCv() {
     this.setCv(null);
+    this.setCvPermissions(null);
     this.editMode = false;
   }
 
@@ -59,7 +69,9 @@ export class DataService {
                 cvName: this.cv.name,
                 cvOwner: this.authenticationService.userName
               };
-              this.cvService.postCvPermissions(cvPermissions).subscribe();
+              this.cvService.postCvPermissions(cvPermissions).subscribe((response) => {
+                this.cvPermissions = cvPermissions;
+              });
             }
           },
           error => {
@@ -67,7 +79,9 @@ export class DataService {
                 cvName: this.cv.name,
                 cvOwner: this.authenticationService.userName
               };
-              this.cvService.postCvPermissions(cvPermissions).subscribe();
+              this.cvService.postCvPermissions(cvPermissions).subscribe((response) => {
+                this.cvPermissions = cvPermissions;
+              });
           }
         );
       },
@@ -107,6 +121,15 @@ export class DataService {
 
   getImageNotify() {
     return this.imageNotify;
+  }
+
+   canEdit() {
+    return this.hasCv()
+        && this.cvPermissions != null
+        && this.authenticationService.authenticated
+        && (this.authenticationService.userName == this.cvPermissions.cvOwner
+          || this.cvPermissions.cvUsers.indexOf(this.authenticationService.userName) >= 0
+          || this.authenticationService.isAdmin()); 
   }
 
 }

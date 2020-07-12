@@ -29,6 +29,8 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class UserService {
 
+//    protected basePath = 'https://cvviewer-env.eba-7nm3cfp2.eu-west-2.elasticbeanstalk.com';
+//    protected basePath = 'https://localhost:9090';
     protected basePath = 'https://www.cv-viewer.co.uk';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();

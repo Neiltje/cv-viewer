@@ -51,16 +51,22 @@ export class CvUserDeleteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userDetailsService.getAllUserNames().subscribe((response) => {
-      this.availableUserNames = response;
-      const index = this.availableUserNames.indexOf(this.authenticationService.userName, 0);
-      if (index > -1) {
-        this.availableUserNames.splice(index, 1);
+    this.userDetailsService.getAllUserNames().subscribe(
+      (response) => {
+        this.availableUserNames = response;
+        const index = this.availableUserNames.indexOf(this.authenticationService.userName, 0);
+        if (index > -1) {
+          this.availableUserNames.splice(index, 1);
+        }
+        if (this.availableUserNames.length > 0) {
+          this.userForm.controls['userName'].setValue(this.availableUserNames[0]);
+        }
+      },
+      (error) => {
+          window.alert("Unable to retrieve user names - see server logs for more details: " + error.error);
+          this.close();
       }
-      if (this.availableUserNames.length > 0) {
-        this.userForm.controls['userName'].setValue(this.availableUserNames[0]);
-      }
-    });
+    );
   }
 
 }

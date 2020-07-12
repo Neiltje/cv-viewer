@@ -55,15 +55,21 @@ export class CvUserPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userDetailsService.getAllUserNames().subscribe((response) => {
-      this.availableUserNames = response;
-      const index = this.availableUserNames.indexOf(this.authenticationService.userName, 0);
-      if (index > -1) {
-        this.availableUserNames.splice(index, 1);
+    this.userDetailsService.getAllUserNames().subscribe(
+      (response) => {
+        this.availableUserNames = response;
+        const index = this.availableUserNames.indexOf(this.authenticationService.userName, 0);
+        if (index > -1) {
+          this.availableUserNames.splice(index, 1);
+        }
+        this.availableUserNames.splice(0, 0, this.authenticationService.userName);
+        this.userForm.controls['userName'].setValue(this.authenticationService.userName);
+      },
+      (error) => {
+          window.alert("Unable to retrieve user names - see server logs for more details: " + error.error);
+          this.close();
       }
-      this.availableUserNames.splice(0, 0, this.authenticationService.userName);
-      this.userForm.controls['userName'].setValue(this.authenticationService.userName);
-    });
+    );
   }
 
 }
