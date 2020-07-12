@@ -35,10 +35,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/cv/getAllCVSummaries", "/cv/*", "/cv/getNewCvTemplate").permitAll()
+            .antMatchers(HttpMethod.GET, "/cv/getAllCVSummaries", "/cv/permissions/*", "/cv/*", "/cv/getNewCvTemplate").permitAll()
             .antMatchers(HttpMethod.POST, "/cv").authenticated()
             .antMatchers(HttpMethod.DELETE, "/cv/*").authenticated()
-            .antMatchers(HttpMethod.GET, "/cv/permissions/*").authenticated()
             .antMatchers(HttpMethod.POST, "/cv/permissions").authenticated()
             .antMatchers(HttpMethod.POST, "/user/login/*").authenticated()
             .antMatchers(HttpMethod.POST, "/user").authenticated()
